@@ -2,7 +2,7 @@ package com.chatt.demo;
 
 import android.app.Application;
 
-import com.parse.Parse;
+//import com.parse.Parse;
 
 /**
  * The Class ChattApp is the Main Application class of this app. The onCreate

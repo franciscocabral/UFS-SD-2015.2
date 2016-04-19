@@ -1,0 +1,78 @@
+[
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_online.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\ic_online.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\user_chat1.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\user_chat1.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_pwd.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\ic_pwd.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_send.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\ic_send.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\logo_login.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\logo_login.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\arrow.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\arrow.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\icon.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\icon.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\actionbar_bg.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\actionbar_bg.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\chat_bubble_green.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\chat_bubble_green.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\back_arrow.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\back_arrow.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_compose.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\ic_compose.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_offline.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\ic_offline.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\editext_bg_gray.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\editext_bg_gray.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\user_chat2.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\user_chat2.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_username.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\ic_username.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\edittext_bg.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\edittext_bg.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\chat_bubble_gray.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\chat_bubble_gray.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\green_btn.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\green_btn.png"
+    },
+    {
+        "merged": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
+        "source": "E:\\Documents\\GitHub\\UFS-SD-2015.2\\APP-Android\\CHATo\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
+    }
+]

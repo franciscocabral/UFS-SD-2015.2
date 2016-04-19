@@ -19,8 +19,8 @@ import com.chatt.demo.custom.CustomActivity;
 import com.chatt.demo.utils.Const;
 import com.chatt.demo.utils.Utils;
 import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
+//import com.parse.ParseException;
+//import com.parse.ParseUser;
 
 /**
  * The Class UserList is the Activity class. It shows a list of all users of

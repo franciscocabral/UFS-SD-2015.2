@@ -8,9 +8,9 @@ import android.widget.EditText;
 
 import com.chatt.demo.custom.CustomActivity;
 import com.chatt.demo.utils.Utils;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
+//import com.parse.ParseException;
+//import com.parse.ParseUser;
+//import com.parse.SignUpCallback;
 
 /**
  * The Class Register is the Activity class that shows user registration screen

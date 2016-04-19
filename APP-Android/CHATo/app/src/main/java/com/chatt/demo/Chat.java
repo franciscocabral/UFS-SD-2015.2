@@ -22,11 +22,11 @@ import android.widget.TextView;
 import com.chatt.demo.custom.CustomActivity;
 import com.chatt.demo.model.Conversation;
 import com.chatt.demo.utils.Const;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
+//import com.parse.FindCallback;
+//import com.parse.ParseException;
+//import com.parse.ParseObject;
+//import com.parse.ParseQuery;
+//import com.parse.SaveCallback;
 
 /**
  * The Class Chat is the Activity class that holds main chat screen. It shows

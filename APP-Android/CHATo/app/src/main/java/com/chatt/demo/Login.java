@@ -8,9 +8,9 @@ import android.widget.EditText;
 
 import com.chatt.demo.custom.CustomActivity;
 import com.chatt.demo.utils.Utils;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
+//import com.parse.LogInCallback;
+//import com.parse.ParseException;
+//import com.parse.ParseUser;
 
 /**
  * The Class Login is an Activity class that shows the login screen to users.

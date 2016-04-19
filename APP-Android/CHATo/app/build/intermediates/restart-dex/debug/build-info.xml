@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instant-run
+    abi="x86"
+    api-level="23"
+    density="xxhdpi"
+    format="7"
+    timestamp="69500995894334" >
+
+    <task
+        name="javac"
+        duration="2072" />
+    <task
+        name="instant-run-dex"
+        duration="0" />
+    <task
+        name="instant-run-transform"
+        duration="680" />
+    <task
+        name="verifier"
+        duration="80" />
+
+    <artifact
+        location="E:\Documents\GitHub\UFS-SD-2015.2\APP-Android\CHATo\app\build\outputs\apk\app-debug.apk"
+        type="MAIN" />
+
+    <build timestamp="69500995894334" >
+        <artifact
+            location="E:\Documents\GitHub\UFS-SD-2015.2\APP-Android\CHATo\app\build\outputs\apk\app-debug.apk"
+            type="MAIN" />
+    </build>
+
+</instant-run>
