@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class ChattApp extends Application
 {
-	private Connection connection;
+
 
 	/* (non-Javadoc)
 	 * @see android.app.Application#onCreate()
@@ -29,16 +29,6 @@ public class ChattApp extends Application
 
 		//Parse.initialize(this, "aEK4rYnLSxU1AqvXc8Euil0Is8mklk7d4Y3YqC6i",
 		//"dYguCg65IT3J2gX2JeFhhDcB25RBjdpceveS8UdU");
-
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("franciscocabral.com");
-		factory.setUsername("guest");
-		factory.setPassword("guest");
-		try {
-			this.connection = factory.newConnection();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}
 }

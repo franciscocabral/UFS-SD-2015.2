@@ -28,14 +28,13 @@ import com.chatt.demo.utils.Utils;
  * The Class UserList is the Activity class. It shows a list of all users of
  * this app. It also shows the Offline/Online status of users.
  */
-public class UserList extends CustomActivity
-{
+public class UserList extends CustomActivity {
 
 	/** The Chat list. */
-	private ArrayList<ParseUser> uList;
+	private ArrayList<String> uList;
 
 	/** The user. */
-	public static ParseUser user;
+	public static String user;
 
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
@@ -65,8 +64,7 @@ public class UserList extends CustomActivity
 	 * @see android.support.v4.app.FragmentActivity#onResume()
 	 */
 	@Override
-	protected void onResume()
-	{
+	protected void onResume(){
 		super.onResume();
 		loadUserList();
 
@@ -78,8 +76,7 @@ public class UserList extends CustomActivity
 	 * @param online
 	 *            true if user is online
 	 */
-	private void updateUserStatus(boolean online)
-	{
+	private void updateUserStatus(boolean online){
 		user.put("online", online);
 		user.saveEventually();
 	}

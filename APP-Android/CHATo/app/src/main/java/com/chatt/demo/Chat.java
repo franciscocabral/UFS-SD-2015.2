@@ -1,8 +1,10 @@
 package com.chatt.demo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +24,9 @@ import android.widget.TextView;
 import com.chatt.demo.custom.CustomActivity;
 import com.chatt.demo.model.Conversation;
 import com.chatt.demo.utils.Const;
+import com.rabbitmq.*;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 //import com.parse.FindCallback;
 //import com.parse.ParseException;
 //import com.parse.ParseObject;
@@ -125,8 +130,7 @@ public class Chat extends CustomActivity
 	 * is empty otherwise it creates a Parse object for Chat message and send it
 	 * to Parse server.
 	 */
-	private void sendMessage()
-	{
+	private void sendMessage() {
 		if (txt.length() == 0)
 			return;
 
@@ -141,31 +145,14 @@ public class Chat extends CustomActivity
 		adp.notifyDataSetChanged();
 		txt.setText(null);
 
-		ParseObject po = new ParseObject("Chat");
-		po.put("sender", UserList.user.getUsername());
-		po.put("receiver", buddy);
-		// po.put("createdAt", "");
-		po.put("message", s);
-		po.saveEventually(new SaveCallback() {
-
-			@Override
-			public void done(ParseException e)
-			{
-				if (e == null)
-					c.setStatus(Conversation.STATUS_SENT);
-				else
-					c.setStatus(Conversation.STATUS_FAILED);
-				adp.notifyDataSetChanged();
-			}
-		});
+        RabbitMQConfig.sendMessage(buddy, s);
 	}
 
 	/**
 	 * Load the conversation list from Parse server and save the date of last
 	 * message that will be used to load only recent new messages
 	 */
-	private void loadConversationList()
-	{
+	private void loadConversationList(){
 		ParseQuery<ParseObject> q = ParseQuery.getQuery("Chat");
 		if (convList.size() == 0)
 		{
