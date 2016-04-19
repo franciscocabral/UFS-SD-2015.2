@@ -15,10 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rabbitmq.*;
+
 import com.chatt.demo.custom.CustomActivity;
 import com.chatt.demo.utils.Const;
 import com.chatt.demo.utils.Utils;
-import com.parse.FindCallback;
+//import com.parse.FindCallback;
 //import com.parse.ParseException;
 //import com.parse.ParseUser;
 
