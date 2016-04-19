@@ -1,0 +1,3 @@
+G:\StudioNew\ChattDemo\app\build\intermediates\classes\debug
+G:\StudioNew\ChattDemo\app\build\intermediates\pre-dexed\debug\Parse-1.4.0-5e3900c64512560a032ec306cdf60b6ad9aa1b6d.jar
+G:\StudioNew\ChattDemo\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-9161250a522576bf0014a498524f602ddfcf1f4f.jar
