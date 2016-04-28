@@ -76,6 +76,17 @@ public class Receiver extends Thread {
         throw new Exception("Not implemented yet");
     }
     
+    public static void sendMessage(byte[] body) throws UnsupportedEncodingException, Exception{
+        Gson g = new Gson();
+        Message m = g.fromJson(new String(body, "UTF-8"), Message.class); 
+        String[] data = g.fromJson(m.content, String[].class);
+        String userId = data[0];
+        String contactId = data[1];
+        String message = data[2];
+        String unixtime = data[3];
+        System.out.println(data[0]+" "+data[1]+" "+data[2]+" "+data[3]);
+        throw new Exception("Not implemented yet");
+    }
     
     @Override
     public void run() {
@@ -95,6 +106,7 @@ public class Receiver extends Thread {
                             case "GETMESSAGES": Receiver.getMessages(body); break;
                             case "GETCONTACTS": Receiver.getContacts(body); break;
                             case "ADDCONTACT": Receiver.addContact(body); break;
+                            case "SENDMESSAGE": Receiver.sendMessage(body); break;
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();

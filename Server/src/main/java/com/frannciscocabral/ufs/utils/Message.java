@@ -59,6 +59,12 @@ public class Message {
         return new Message("ADDCONTACT", g.toJson(s));
     }
     
+    public static Message sendMessage(int userId, int contactId, String message){
+        long unixTime = System.currentTimeMillis() / 1000L;
+        String[] s = {Integer.toString(userId), Integer.toString(contactId), message, Long.toString(unixTime)};
+        Gson g = new Gson();
+        return new Message("SENDMESSAGE", g.toJson(s));
+    }
     
     public String toJson(){
         Gson g = new Gson();
