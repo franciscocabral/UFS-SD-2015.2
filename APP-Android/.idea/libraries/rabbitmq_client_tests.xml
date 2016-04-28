@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="rabbitmq-client-tests">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/rabbitmq-client-tests.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
