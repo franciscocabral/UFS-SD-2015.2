@@ -4795,6 +4795,7 @@ a.thumbnail.active {
 }
 .media,
 .media-body {
+text-align: left;
   overflow: hidden;
   zoom: 1;
 }
