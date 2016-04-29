@@ -30,7 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class ActivityHome extends Activity {
+public class Home extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +87,7 @@ public class ActivityHome extends Activity {
 
     ConnectionFactory factory = new ConnectionFactory();
     private void setupConnectionFactory() {
-        String uri = "CLOUDAMQP_URL";
+        String uri = "amqp://fthcmjci:TJWkglcMU8pbZjt89PYJRQV-Gi-SLD0g@black-boar.rmq.cloudamqp.com/fthcmjci";
         try {
             factory.setAutomaticRecoveryEnabled(false);
             factory.setUri(uri);

@@ -9,12 +9,20 @@
         android:layout_height="fill_parent"
         android:stretchColumns="1" >
 
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:layout_column="2" />
+
         <EditText
             android:id="@+id/text"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="#ffffff"
-            android:hint="Enter a message" />
+            android:hint="Enter a message"
+            android:layout_column="1"
+            android:layout_span="2" />
 
         <Button
             android:id="@+id/publish"
