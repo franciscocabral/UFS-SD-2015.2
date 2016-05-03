@@ -24,4 +24,12 @@ abstract class Conversa {
     public String getTexto(){
         return texto;
     }
+
+    public String getUsuario(){
+        return usuario;
+    }
+
+    public SimpleDateFormat getData(){
+        return data;
+    }
 }
