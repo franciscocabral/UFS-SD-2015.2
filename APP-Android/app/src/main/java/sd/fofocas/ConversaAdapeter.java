@@ -58,10 +58,10 @@ public class ConversaAdapeter implements Adapter {
         final View layout;
         TextView nome;
 
-        if (convertView == null && conversa instanceof Enviada) {
+        if (convertView == null && conversa.isEnviada()) {
             LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = inflater.inflate(R.layout.enviada, null);
-        } else if(convertView == null && conversa instanceof Recebida){
+        } else if(convertView == null && !conversa.isEnviada( )){
             LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = inflater.inflate(R.layout.recebida, null);
         } else {
