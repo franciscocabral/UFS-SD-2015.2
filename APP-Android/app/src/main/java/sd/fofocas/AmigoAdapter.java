@@ -13,11 +13,11 @@ import java.util.ArrayList;
 /**
  * Created by Th on 03/05/2016.
  */
-public class ConversaAdapeter implements Adapter {
+public class AmigoAdapter implements Adapter {
     private Context contexto;
-    private ArrayList<Conversa> lista;
+    private ArrayList<Amigo> lista;
 
-    public ConversaAdapeter (Context contexto, ArrayList<Conversa> lista){
+    public AmigoAdapter (Context contexto, ArrayList<Amigo> lista){
         this.contexto=contexto;
         this.lista=lista;
     }
@@ -54,22 +54,18 @@ public class ConversaAdapeter implements Adapter {
 
     @Override
     public View getView(int posicao, View convertView, ViewGroup parent) {
-        final Conversa conversa = lista.get(posicao);
+        final Amigo amigo = lista.get(posicao);
         final View layout;
 
-
-        if (convertView == null && conversa.isEnviada()) {
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            layout = inflater.inflate(R.layout.enviada, null);
-        } else if(convertView == null && !conversa.isEnviada( )){
-            LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            layout = inflater.inflate(R.layout.recebida, null);
+            layout = inflater.inflate(R.layout.amigo, null);
         } else {
             layout = convertView;
         }
 
-        TextView texto = (TextView) layout.findViewById(R.id.tvTexto);
-        texto.setText(conversa.getTexto());
+        TextView nome = (TextView) layout.findViewById(R.id.tvTexto);
+        nome.setText(amigo.getNome());
 
 
         return layout;

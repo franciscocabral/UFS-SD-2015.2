@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="sd.fofocas.Amigo"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Amigo X"
+        android:id="@+id/tvAmigo"
+        android:layout_gravity="left|center_horizontal"
+        android:layout_margin="15dp"
+        android:longClickable="false"
+        android:linksClickable="false" />
+
+</LinearLayout>
