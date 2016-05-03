@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class Home extends Activity {
@@ -35,7 +36,7 @@ public class Home extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
+        ListView lv = (ListView) findViewById(R.id.lvChat);
         setupConnectionFactory();
         publishToAMQP();
         setupPubButton();
@@ -44,10 +45,9 @@ public class Home extends Activity {
             @Override
             public void handleMessage(Message msg) {
                 String message = msg.getData().getString("msg");
-                TextView tv = (TextView) findViewById(R.id.textView);
                 Date now = new Date();
                 SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss");
-                tv.append(ft.format(now) + ' ' + message + '\n');
+                //tv.append(ft.format(now) + ' ' + message + '\n');
             }
         };
         subscribe(incomingMessageHandler);

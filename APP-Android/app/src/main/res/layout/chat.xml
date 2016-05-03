@@ -8,22 +8,34 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:id="@+id/listView" />
-
-    <EditText
-        android:id="@+id/text"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:background="#ffffff"
-        android:hint="Enter a message" />
-
-    <Button
-        android:id="@+id/publish"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text"
-        android:text="Publish message" />
+        android:id="@+id/lvChat"
+        android:layout_weight="70" />
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="600">
+
+        <EditText
+            android:id="@+id/text"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="#ffffff"
+            android:hint="Enter a message"
+            android:layout_weight="15" />
+
+        <Button
+            android:id="@+id/publish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:text="Enviar"
+            android:layout_weight="50" />
+    </LinearLayout>
 
 
 </LinearLayout>
