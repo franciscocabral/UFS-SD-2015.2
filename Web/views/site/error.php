@@ -1,14 +1,7 @@
-<?php
-
-/* @var $this yii\web\View */
-/* @var $name string */
-/* @var $message string */
-/* @var $exception Exception */
-
+<?php 
 use yii\helpers\Html;
+ ?>
 
-$this->title = $name;
-?>
 <div class="site-error">
 
     <h1><?= Html::encode($this->title) ?></h1>

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
-<head>
-    <meta charset="utf-8" />
-    <title>Conversa atual</title>
+<html lang="pt-br">
+  <head>
+	<link rel="stylesheet" href="/css/bootstrap.css">
+    <meta charset="UTF-8" />
+    <title>Fofocas - Perfil - Alterar</title>
+  </head>
 
-    <link rel="stylesheet"  href="/css/bootstrap.css" />
-</head>
-
-<body style="font-family:Verdana">
+  <body style="font-family:Verdana">
   <div class="container">
 <div class="row " style="padding-top:40px;">
     <h3 class="text-center" >
@@ -15,31 +14,40 @@
     <div class="col-md-8">
         <div class="panel panel-info">
             <div class="panel-heading">
-                Conversa atual
+                Perfil de usuário
             </div>
-            <div class="panel-body">
+			            <div class="panel-body">
 				<ul class="media-list">
                                     <li class="media">
                                         <div class="media-body">
                                             <div class="media">
                                                 <div class="media-body" >
-															frase
-                                                    <br />
-                                                   <small class="text-muted">USUÁRIO | HORA - DATA </small>
+													      Nome: <br>
+														  Email:<br>
+			<div class="form">
+            <div class="panel-body">
+				<ul class="media-list">
+
+              <form class="login-form">
+			  <input type="text" placeholder="Nome"  name="name"/><br>
+			  <input type="password" placeholder="Senha" name="password1"/><br>
+			  <input type="password" placeholder="Repita a senha" name="password2"/><br>
+			  <input type="text" placeholder="Email" name="email"/><br>
+
+			</form>
+
+                </ul>
+				<a href="upadete_test.php"><button>Confirmar</button></a>
+				</div>
+            </div>
                                                     <hr />
                                                 </div>
                                             </div>
                                         </div>
+
                                     </li>
+
                 </ul>
-            </div>
-            <div class="panel-footer">
-                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Digite sua mensagem" />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-info" type="button">Enviar</button>
-                                    </span>
-                                </div>
             </div>
         </div>
     </div>
@@ -75,4 +83,6 @@
 </div>
   </div>
 </body>
+
+
 </html>

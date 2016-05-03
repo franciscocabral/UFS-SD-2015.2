@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
-<head>
-    <meta charset="utf-8" />
-    <title>Conversa atual</title>
+<html lang="pt-br">
+  <head>
+	<link rel="stylesheet" href="/css/bootstrap.css">
+    <meta charset="UTF-8" />
+    <title>Fofocas - Perfil</title>
+  </head>
 
-    <link rel="stylesheet"  href="/css/bootstrap.css" />
-</head>
-
-<body style="font-family:Verdana">
+  <body style="font-family:Verdana">
   <div class="container">
 <div class="row " style="padding-top:40px;">
     <h3 class="text-center" >
@@ -15,31 +14,28 @@
     <div class="col-md-8">
         <div class="panel panel-info">
             <div class="panel-heading">
-                Conversa atual
+                Perfil de usuário
             </div>
             <div class="panel-body">
 				<ul class="media-list">
                                     <li class="media">
                                         <div class="media-body">
                                             <div class="media">
-                                                <div class="media-body" >
-															frase
-                                                    <br />
-                                                   <small class="text-muted">USUÁRIO | HORA - DATA </small>
-                                                    <hr />
-                                                </div>
+                                                <div class="media-body">
+													      Nome: <br>
+														  Email:<br><br>
+														  <div align="center">
+															<a align="center" href= "<?= Yii::$app->urlManager->createUrl(["site/profile-updade-form"]); ?>"><button style="width: 300px;">Alterar</button></a>
+														  </div>
+												</div>
                                             </div>
+
                                         </div>
+
                                     </li>
+
+
                 </ul>
-            </div>
-            <div class="panel-footer">
-                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Digite sua mensagem" />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-info" type="button">Enviar</button>
-                                    </span>
-                                </div>
             </div>
         </div>
     </div>
@@ -75,4 +71,6 @@
 </div>
   </div>
 </body>
+
+
 </html>
