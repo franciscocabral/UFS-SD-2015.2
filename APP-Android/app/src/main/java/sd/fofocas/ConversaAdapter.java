@@ -1,11 +1,10 @@
 package sd.fofocas;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,23 +12,13 @@ import java.util.ArrayList;
 /**
  * Created by Th on 03/05/2016.
  */
-public class ConversaAdapeter implements Adapter {
+public class ConversaAdapter extends BaseAdapter {
     private Context contexto;
-    private ArrayList<Conversa> lista;
+    private ArrayList<Mensagem> lista;
 
-    public ConversaAdapeter (Context contexto, ArrayList<Conversa> lista){
+    public ConversaAdapter(Context contexto, ArrayList<Mensagem> lista){
         this.contexto=contexto;
         this.lista=lista;
-    }
-
-    @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
-
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-
     }
 
     @Override
@@ -47,21 +36,17 @@ public class ConversaAdapeter implements Adapter {
         return 0;
     }
 
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
 
     @Override
     public View getView(int posicao, View convertView, ViewGroup parent) {
-        final Conversa conversa = lista.get(posicao);
+        final Mensagem mensagem = lista.get(posicao);
         final View layout;
 
 
-        if (convertView == null && conversa.isEnviada()) {
+        if (convertView == null && mensagem.isEnviada()) {
             LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = inflater.inflate(R.layout.enviada, null);
-        } else if(convertView == null && !conversa.isEnviada( )){
+        } else if (convertView == null && !mensagem.isEnviada()) {
             LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = inflater.inflate(R.layout.recebida, null);
         } else {
@@ -69,24 +54,9 @@ public class ConversaAdapeter implements Adapter {
         }
 
         TextView texto = (TextView) layout.findViewById(R.id.tvTexto);
-        texto.setText(conversa.getTexto());
+        texto.setText(mensagem.getTexto());
 
 
         return layout;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
     }
 }

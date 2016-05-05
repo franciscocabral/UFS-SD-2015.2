@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -29,14 +30,21 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class Home extends Activity {
+
+    ConversaAdapter conversaAdapter;
+    ArrayList<Mensagem> mensagens;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         ListView lv = (ListView) findViewById(R.id.lvChat);
+        mensagens = new ArrayList<>();
+        conversaAdapter = new ConversaAdapter(this, mensagens);
+        lv.setAdapter(conversaAdapter);
+
         setupConnectionFactory();
         publishToAMQP();
         setupPubButton();
@@ -46,7 +54,8 @@ public class Home extends Activity {
             public void handleMessage(Message msg) {
                 String message = msg.getData().getString("msg");
                 Date now = new Date();
-                SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss");
+                mensagens.add(new Mensagem(message, "usuario", now, false));
+                conversaAdapter.notifyDataSetChanged();
                 //tv.append(ft.format(now) + ' ' + message + '\n');
             }
         };

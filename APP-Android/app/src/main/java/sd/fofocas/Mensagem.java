@@ -3,23 +3,22 @@ package sd.fofocas;
 import android.content.Context;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
  * Created by Th on 03/05/2016.
  */
-public class Conversa {
+public class Mensagem {
     private String texto;
-    private SimpleDateFormat data;
+    private Date data;
     private String usuario;
-    private Context context;
     private boolean enviada;
 
-    public Conversa(Context context, String texto, String usuario, SimpleDateFormat data,boolean enviada){
+    public Mensagem(String texto, String usuario, Date data, boolean enviada){
         this.texto = texto;
         this.usuario = usuario;
         this.data = data;
-        this.context = context;
         this.enviada = enviada;
     }
 
@@ -31,7 +30,7 @@ public class Conversa {
         return usuario;
     }
 
-    public SimpleDateFormat getData(){
+    public Date getData(){
         return data;
     }
 
