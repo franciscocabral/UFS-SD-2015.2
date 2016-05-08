@@ -35,9 +35,25 @@
             </div>
             <div class="panel-footer">
                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Digite sua mensagem" />
+                                    <input type="text" class="form-control" placeholder="Digite sua mensagem" id="in1" />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-info" type="button">Enviar</button>
+                                        <button class="btn btn-info" type="button"  onclick="myFunction()">Enviar</button>
+										<script>
+										function send() {
+											var texto = document.getElementById("in1").value;
+											
+											var amqp = require('amqplib/callback_api');
+
+											amqp.connect('amqp://ptkkvumz:h5CbPFfnbuXdVhsazHhLB8QJBSetOEls@jellyfish.rmq.cloudamqp.com/ptkkvumz', function(err, conn) {
+											  conn.createChannel(function(err, ch) {
+												var destinatario = 'Pessoa1';
+												ch.assertQueue(destinatario, {durable: false});
+												ch.sendToQueue(destinatario, texto);
+											  });
+											  setTimeout(function() { conn.close(); process.exit(0) }, 500);
+											});
+										}
+										</script>
                                     </span>
                                 </div>
             </div>
@@ -59,7 +75,7 @@
                                                 <a class="pull-left" href="#">
                                                 </a>
                                                 <div class="media-body" >
-                                                    <h5>Usuario | Grupo </h5>
+                                                    <h5>Usuario</h5>
                                                     
                                                    <small class="text-muted">Última vez ativo em</small>
                                                 </div>
