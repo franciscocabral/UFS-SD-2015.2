@@ -1,25 +1,70 @@
-<?php
-require('vendor/autoload.php');
-define('AMQP_DEBUG', false);
-use PhpAmqpLib\Connection\AMQPConnection;
-use PhpAmqpLib\Message\AMQPMessage;
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html" lang="pt-br">
+<head>
+	<meta charset="utf-8"/>
+	<title>Conversa atual</title>
+	<link rel="stylesheet" href="css/bootstrap.css"/>
+	<script src="js/jquery-2.2.3.min.js"></script>
+	<script src="js/index.js"></script>
+</head>
 
-$conn = new AMQPConnection("franciscocabral.com",5672, "guest", "guest");
-$ch = $conn->channel();
+<body style="font-family:Verdana">
+<div class="container">
+	<div class="row " style="padding-top:40px;">
+		<h3 id="username" class="text-center"></h3>
 
-$exchange = 'amq.direct';
-$queue = 'icaro';
-$ch->queue_declare($queue, false, true, false, false);
-$ch->exchange_declare($exchange, 'direct', true, true, false);
-$ch->queue_bind($queue, $exchange);
-
-$msg_body = '';
-$msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
-$ch->basic_publish($msg, $exchange);
-
-$retrived_msg = $ch->basic_get($queue);
-echo $retrived_msg->body;
-$ch->basic_ack($retrived_msg->delivery_info['delivery_tag']);
-
-$ch->close();
-$conn->close();
+		<div class="col-md-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					Últimas conversas
+				</div>
+				<div class="panel-body">
+					<div class="list-group" id="users">
+						<a href="#" class="list-group-item active" id="USER1">
+							USER1
+						</a>
+						<a href="#" class="list-group-item" id="USER2">
+							USER2
+						</a>
+						<a href="#" class="list-group-item" id="USER3">
+							USER3
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					Conversa atual
+				</div>
+				<div class="panel-body">
+					<ul class="media-list">
+						<li class="media">
+							<div class="media-body">
+								<div class="media">
+									<div class="media-body">
+										frase
+										<br/>
+										<small class="text-muted">USUÁRIO | HORA - DATA</small>
+										<hr/>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="panel-footer">
+					<div class="input-group">
+						<input id="mensagem" type="text" class="form-control" placeholder="Digite sua mensagem" id="in1"/>
+							<span class="input-group-btn">
+							<button id="send" class="btn btn-info" type="button">Enviar</button>
+							</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
