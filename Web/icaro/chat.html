@@ -37,11 +37,11 @@
                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Digite sua mensagem" id="in1" />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-info" type="button"  onclick="myFunction()">Enviar</button>
+                                        <button class="btn btn-info" type="button"  onclick="send()">Enviar</button>
 										<script>
 										function send() {
 											var texto = document.getElementById("in1").value;
-											
+											document.getElementById("in1").value = "";
 											var amqp = require('amqplib/callback_api');
 
 											amqp.connect('amqp://ptkkvumz:h5CbPFfnbuXdVhsazHhLB8QJBSetOEls@jellyfish.rmq.cloudamqp.com/ptkkvumz', function(err, conn) {
