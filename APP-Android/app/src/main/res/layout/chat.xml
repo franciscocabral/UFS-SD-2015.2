@@ -3,38 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    tools:context="sd.fofocas.Home"
+    tools:context=".ChatActivity"
     android:layout_height="match_parent">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lvChat"
-        android:layout_weight="70" />
+        android:layout_weight="1"/>
 
 
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="600">
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/text"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="50dp"
             android:background="#ffffff"
-            android:hint="Enter a message"
-            android:layout_weight="15" />
+            android:hint="Enter a message"/>
 
         <Button
             android:id="@+id/publish"
-            android:layout_width="match_parent"
+            android:onClick="enviar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text"
-            android:text="Enviar"
-            android:layout_weight="50" />
+            android:text="Enviar"/>
     </LinearLayout>
 
 

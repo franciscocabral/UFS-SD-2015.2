@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="sd.fofocas.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context="sd.fofocas.AmigosActivity"
+    tools:showIn="@layout/activity_amigos">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lvAmigos"
+        android:layout_gravity="center_horizontal"/>
 
 </RelativeLayout>

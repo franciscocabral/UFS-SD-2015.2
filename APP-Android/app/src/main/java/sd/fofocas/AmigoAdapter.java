@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,23 +14,13 @@ import java.util.ArrayList;
 /**
  * Created by Th on 03/05/2016.
  */
-public class AmigoAdapter implements Adapter {
+public class AmigoAdapter extends BaseAdapter {
     private Context contexto;
     private ArrayList<Amigo> lista;
 
     public AmigoAdapter (Context contexto, ArrayList<Amigo> lista){
         this.contexto=contexto;
         this.lista=lista;
-    }
-
-    @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
-
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-
     }
 
     @Override
@@ -48,11 +39,6 @@ public class AmigoAdapter implements Adapter {
     }
 
     @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
     public View getView(int posicao, View convertView, ViewGroup parent) {
         final Amigo amigo = lista.get(posicao);
         final View layout;
@@ -64,25 +50,10 @@ public class AmigoAdapter implements Adapter {
             layout = convertView;
         }
 
-        TextView nome = (TextView) layout.findViewById(R.id.tvTexto);
+        TextView nome = (TextView) layout.findViewById(R.id.tvAmigo);
         nome.setText(amigo.getNome());
 
 
         return layout;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
     }
 }

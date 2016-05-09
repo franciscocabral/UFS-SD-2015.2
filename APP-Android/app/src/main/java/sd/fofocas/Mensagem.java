@@ -12,22 +12,16 @@ import java.util.Date;
 public class Mensagem {
     private String texto;
     private Date data;
-    private String usuario;
     private boolean enviada;
 
     public Mensagem(String texto, String usuario, Date data, boolean enviada){
         this.texto = texto;
-        this.usuario = usuario;
         this.data = data;
         this.enviada = enviada;
     }
 
     public String getTexto(){
         return texto;
-    }
-
-    public String getUsuario(){
-        return usuario;
     }
 
     public Date getData(){

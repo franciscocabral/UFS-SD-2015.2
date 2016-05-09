@@ -12,11 +12,11 @@ import java.util.ArrayList;
 /**
  * Created by Th on 03/05/2016.
  */
-public class ConversaAdapter extends BaseAdapter {
+public class MensagemAdapter extends BaseAdapter {
     private Context contexto;
     private ArrayList<Mensagem> lista;
 
-    public ConversaAdapter(Context contexto, ArrayList<Mensagem> lista){
+    public MensagemAdapter(Context contexto, ArrayList<Mensagem> lista){
         this.contexto=contexto;
         this.lista=lista;
     }

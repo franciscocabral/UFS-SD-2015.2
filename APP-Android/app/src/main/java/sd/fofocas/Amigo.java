@@ -2,17 +2,17 @@ package sd.fofocas;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
 /**
  * Created by Th on 03/05/2016.
  */
 public class Amigo {
     private String nome;
     private int id;
-    private Context context;
+    private ArrayList<Mensagem> mensagens = new ArrayList<>();
 
-
-    public Amigo(String nome, int id, Context context){
-        this.context=context;
+    public Amigo(String nome, int id){
         this.id=id;
         this.nome=nome;
     }
@@ -23,6 +23,10 @@ public class Amigo {
 
     public int getId(){
         return id;
+    }
+
+    public void addMensagem(){
+
     }
 
 }

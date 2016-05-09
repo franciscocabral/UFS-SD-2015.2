@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">Fofocas</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Fofocas</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_amigos">Amigos</string>
+
 </resources>

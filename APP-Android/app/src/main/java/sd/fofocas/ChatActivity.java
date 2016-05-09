@@ -7,7 +7,6 @@ package sd.fofocas;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.BlockingDeque;
@@ -31,9 +30,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class Home extends Activity {
+public class ChatActivity extends Activity {
 
-    ConversaAdapter conversaAdapter;
+    MensagemAdapter mensagemAdapter;
     ArrayList<Mensagem> mensagens;
 
     @Override
@@ -42,8 +41,8 @@ public class Home extends Activity {
         setContentView(R.layout.chat);
         ListView lv = (ListView) findViewById(R.id.lvChat);
         mensagens = new ArrayList<>();
-        conversaAdapter = new ConversaAdapter(this, mensagens);
-        lv.setAdapter(conversaAdapter);
+        mensagemAdapter = new MensagemAdapter(this, mensagens);
+        lv.setAdapter(mensagemAdapter);
 
         setupConnectionFactory();
         publishToAMQP();
@@ -55,7 +54,7 @@ public class Home extends Activity {
                 String message = msg.getData().getString("msg");
                 Date now = new Date();
                 mensagens.add(new Mensagem(message, "usuario", now, false));
-                conversaAdapter.notifyDataSetChanged();
+                mensagemAdapter.notifyDataSetChanged();
                 //tv.append(ft.format(now) + ' ' + message + '\n');
             }
         };
@@ -187,5 +186,9 @@ public class Home extends Activity {
             }
         });
         publishThread.start();
+    }
+
+    public void enviar(View view) {
+        //asasas
     }
 }
