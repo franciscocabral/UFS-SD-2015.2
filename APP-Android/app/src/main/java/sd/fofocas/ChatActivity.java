@@ -33,15 +33,16 @@ import android.widget.ListView;
 public class ChatActivity extends Activity {
 
     MensagemAdapter mensagemAdapter;
-    ArrayList<Mensagem> mensagens;
+    Amigo amigo;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         ListView lv = (ListView) findViewById(R.id.lvChat);
-        mensagens = new ArrayList<>();
-        mensagemAdapter = new MensagemAdapter(this, mensagens);
+        //recuperar amigo aqui
+        mensagemAdapter = new MensagemAdapter(this, amigo.getMensagens());
         lv.setAdapter(mensagemAdapter);
 
         setupConnectionFactory();
@@ -53,9 +54,8 @@ public class ChatActivity extends Activity {
             public void handleMessage(Message msg) {
                 String message = msg.getData().getString("msg");
                 Date now = new Date();
-                mensagens.add(new Mensagem(message, "usuario", now, false));
+                amigo.addMensagem(message, now, false);
                 mensagemAdapter.notifyDataSetChanged();
-                //tv.append(ft.format(now) + ' ' + message + '\n');
             }
         };
         subscribe(incomingMessageHandler);
@@ -66,7 +66,8 @@ public class ChatActivity extends Activity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                EditText et = (EditText) findViewById(R.id.text);
+                EditText et = (EditText) findViewById(R.id.etText);
+                amigo.addMensagem(et.getText().toString(),new Date(),true);
                 publishMessage(et.getText().toString());
                 et.setText("");
             }
@@ -163,7 +164,7 @@ public class ChatActivity extends Activity {
                         while (true) {
                             String message = queue.takeFirst();
                             try{
-                                ch.basicPublish("amq.fanout", "chat", null, message.getBytes());
+                                ch.basicPublish("", amigo.getNome(), null, message.getBytes());
                                 Log.d("", "[s] " + message);
                                 ch.waitForConfirmsOrDie();
                             } catch (Exception e){
@@ -186,9 +187,5 @@ public class ChatActivity extends Activity {
             }
         });
         publishThread.start();
-    }
-
-    public void enviar(View view) {
-        //asasas
     }
 }

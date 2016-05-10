@@ -67,7 +67,7 @@ public class AmigosActivity extends AppCompatActivity {
         lvAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                //Iniciar o Chat Activity
             }
         });
     }
@@ -81,7 +81,7 @@ public class AmigosActivity extends AppCompatActivity {
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String nome = edtNome.getText().toString();
+                String nome = edtNome.getText().toString().toUpperCase();
                 amigos.add(new Amigo(nome,amigos.size()+1));
                 adapter.notifyDataSetChanged();
             }

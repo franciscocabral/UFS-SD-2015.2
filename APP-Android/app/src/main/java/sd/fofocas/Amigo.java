@@ -3,6 +3,7 @@ package sd.fofocas;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Th on 03/05/2016.
@@ -25,8 +26,11 @@ public class Amigo {
         return id;
     }
 
-    public void addMensagem(){
-
+    public void addMensagem(String msg, Date data, boolean enviada){
+        mensagens.add(new Mensagem(msg,data,enviada));
     }
 
+    public ArrayList<Mensagem> getMensagens() {
+        return mensagens;
+    }
 }

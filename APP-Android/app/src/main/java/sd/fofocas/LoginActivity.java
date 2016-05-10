@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void logar(View view) {
         String nome = edtUsuario.getText().toString().toUpperCase();
-        nome = nome.trim();
+        nome = nome.trim().toUpperCase();
         if(nome.isEmpty()){
             Toast.makeText(this,"Login Inválido",Toast.LENGTH_LONG).show();
         } else {

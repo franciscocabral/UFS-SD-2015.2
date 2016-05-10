@@ -14,7 +14,7 @@ public class Mensagem {
     private Date data;
     private boolean enviada;
 
-    public Mensagem(String texto, String usuario, Date data, boolean enviada){
+    public Mensagem(String texto, Date data, boolean enviada){
         this.texto = texto;
         this.data = data;
         this.enviada = enviada;
