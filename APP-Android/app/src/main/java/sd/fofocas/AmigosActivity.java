@@ -1,6 +1,7 @@
 package sd.fofocas;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -92,7 +93,10 @@ public class AmigosActivity extends AppCompatActivity {
         lvAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Iniciar o Chat Activity
+                Intent intent = new Intent(AmigosActivity.this, ChatActivity.class);
+                intent.putExtra("nome",amigos.get(position).getNome());
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -106,7 +110,7 @@ public class AmigosActivity extends AppCompatActivity {
 
     ConnectionFactory factory = new ConnectionFactory();
     private void setupConnectionFactory() {
-        String uri = "amqp://fthcmjci:TJWkglcMU8pbZjt89PYJRQV-Gi-SLD0g@black-boar.rmq.cloudamqp.com/fthcmjci";
+        String uri = "franciscocabral.com";
         try {
             factory.setAutomaticRecoveryEnabled(false);
             factory.setUri(uri);
@@ -125,7 +129,7 @@ public class AmigosActivity extends AppCompatActivity {
                         Channel channel = connection.createChannel();
                         channel.basicQos(1);
                         DeclareOk q = channel.queueDeclare();
-                        channel.queueBind(q.getQueue(), "amq.fanout", "chat");
+                        channel.queueBind(q.getQueue(), "", usuario);
                         QueueingConsumer consumer = new QueueingConsumer(channel);
                         channel.basicConsume(q.getQueue(), true, consumer);
 
