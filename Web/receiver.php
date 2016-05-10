@@ -30,3 +30,5 @@
 
 	$ch->close();
 	$conn->close();
+	
+?>
