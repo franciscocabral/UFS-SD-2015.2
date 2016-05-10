@@ -1,9 +1,10 @@
 var user = localStorage.getItem("user");
-var minhasMensagens = $.parseJSON(localStorage.getItem("mensagens"));
+var minhasMensagens = $.parseJSON(localStorage.getItem("mensagens")); //Nao e usado, pode remover?
 
 $(document).ready(function () {
     if (user != null) {
         $("#username").text("Bem vindo: " + user);
+        carregar_contatos_do_banco(); //Nao esta funcionando!!!!
         listen_queue(user);
     } else {
         if (user = prompt("Quem é você?")) {
@@ -11,7 +12,7 @@ $(document).ready(function () {
             $("#username").text("Bem vindo: " + user);
             localStorage.setItem("user", user);
             listen_queue(user);
-            carregar_do_banco();
+            //carregar_do_banco(); //Se o usuario e novo, pq carrega do banco aqui?
         } else {
             alert("É necessário se identificar!");
             window.location = "/";
@@ -26,20 +27,42 @@ $(document).on("click", "#users a", function () {
     /////////////////////////////
     // Troca de conversa atual //
     /////////////////////////////
+    //media-body
+    //$("#users").append("<li class='list-group-item'>"+novoContato+"</li>");
+    
     console.log(fila);
+});
+
+$(document).on("click", "#addContato", function () {
+    var novoContato = $("#nomeNovoContato").val();
+    novoContato = novoContato.toUpperCase();
+   
+	var contatosNoBanco = localStorage.getItem("contatos");
+	var contatoCadastado = false;
+	$(contatosNoBanco).each(function(i, contatoAtual){
+		if (contatoAtual == novoContato) {
+			contatoCadastado = true;
+		}
+    });
+	
+	if (!contatoCadastado) {
+		$("#users").append("<li class='list-group-item'>"+novoContato+"</li>");
+		armazenar_contato(novoContato); //Nao esta cadastrando!!!!!!!!
+    }
 });
 
 $(document).on("click", "#send", function () {
     var htmlMsg = $("#mensagem").val();
-    var to = $("#users .active").attr("id");
+    var to = $("#users .active").attr("id"); // "#users .active" ou "#users.active"?
 
     var tupla = {
         from: user,
-        time: new Date(),
+        data: new Date(),
         msg: htmlMsg
     };
 
     send_message(JSON.stringify(tupla), to);
+    
     var historico = localStorage.getItem("historico");
     historico = $.parseJSON(historico);
     historico[to].push(tupla);
@@ -56,34 +79,14 @@ function listen_queue(queue) {
         }).done(function (json) {
             var response = $.parseJSON(json);
             var from = response.from;
-            var time = response.time;
+            var data = response.data;
             var msg = response.msg;
             
             //////////////////////////////
             //Modifica o HTML usando JS //
             //////////////////////////////
             console.log(response);
-            
-            var historico = localStorage.getItem("historico");
-            historico = $.parseJSON(historico);
-            //historico = { 
-            //  "CHICO":[
-            //     {from:"CHICO", msg:"bla", time:"..."}, 
-            //     {from:"CHICO", msg:"bla", time:"..."},
-            //     {from:"RODRIGO", msg:"bla", time:"..."}, 
-            //     {from:"CHICO", msg:"bla", time:"..."}, 
-            //     {from:"RODRIGO", msg:"bla", time:"..."}, 
-            //  ], 
-            //  "ICARO":[
-            //     {from:"RODRIGO", msg:"bla", time:"..."}, 
-            //     {from:"ICARO", msg:"bla", time:"..."}, 
-            //     {from:"ICARO", msg:"bla", time:"..."}, 
-            //     {from:"RODRIGO", msg:"bla", time:"..."}, 
-            //     {from:"RODRIGO", msg:"bla", time:"..."}, 
-            //  ] 
-            //};
-            historico[from].push(response);
-            localStorage.setItem("historico", JSON.stringify(response));
+			armazenar_historico(response);
         });
     }, 1000);
 }
@@ -94,12 +97,12 @@ function send_message(msg, queue) {
         url: "sender.php",
         data: {'queue': queue, 'msg': msg},
     }).done(function (json) {
-        var response = $.parseJSON(json);
+        var response = $.parseJSON(json); //Resposta?
         console.log(response);
     });
 }
 
-function carregar_do_banco(){
+function carregar_do_banco(){ //Se carrega o historico, pq e chamada no inicio? Nao deveria ser chamada quando se clica em um contato?
     //////////////////////////////////
     //Carrega histórico de mensagens//
     //////////////////////////////////
@@ -108,11 +111,50 @@ function carregar_do_banco(){
     $(historico).each(function(i, filas){
         $(filas).each(function(filaAtual, tupla){
             var quemEnviou = tupla.from;
-            var time = tupla.time;
+            var data = tupla.data;
             var msg = tupla.msg;
             ///////////////////
             //Colocar na tela//
             ///////////////////
         });
     });
+}
+
+function carregar_contatos_do_banco(){
+    var contatos = localStorage.getItem("contatos");
+    contatos = $.parseJSON(contatos);
+   
+    $(contatos).each(function(i, contatoAtual){
+		$("#users").append("<li class='list-group-item'>"+contatoAtual+"</li>");
+    });
+}
+
+function armazenar_historico(response){
+	var historico = localStorage.getItem("historico");
+	historico = $.parseJSON(historico);
+    //historico = { 
+    //  "CHICO":[
+    //     {from:"CHICO", msg:"bla", time:"..."}, 
+    //     {from:"CHICO", msg:"bla", time:"..."},
+    //     {from:"RODRIGO", msg:"bla", time:"..."}, 
+    //     {from:"CHICO", msg:"bla", time:"..."}, 
+    //     {from:"RODRIGO", msg:"bla", time:"..."}, 
+    // ], 
+    //  "ICARO":[
+    //     {from:"RODRIGO", msg:"bla", time:"..."}, 
+    //     {from:"ICARO", msg:"bla", time:"..."}, 
+    //     {from:"ICARO", msg:"bla", time:"..."}, 
+    //     {from:"RODRIGO", msg:"bla", time:"..."}, 
+    //     {from:"RODRIGO", msg:"bla", time:"..."}, 
+    //  ] 
+    //};
+    historico[from].push(response);
+    localStorage.setItem("historico", JSON.stringify(response)); //Nao seria JSON.stringify(historico)?
+}
+
+function armazenar_contato(novoContato){
+	var contatos = localStorage.getItem("contatos");
+	contatos = $.parseJSON(contatos);
+    contatos.push(novoContato);
+    localStorage.setItem("contatos", JSON.stringify(contatos));
 }
