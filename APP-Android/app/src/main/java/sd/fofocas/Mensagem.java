@@ -11,12 +11,12 @@ import java.util.Date;
  */
 public class Mensagem {
     private String texto;
-    private Date data;
+    private String data;
     private boolean enviada;
 
     public Mensagem(String texto, Date data, boolean enviada){
         this.texto = texto;
-        this.data = data;
+        this.data = (new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")).format(data);
         this.enviada = enviada;
     }
 
@@ -24,7 +24,7 @@ public class Mensagem {
         return texto;
     }
 
-    public Date getData(){
+    public String getData(){
         return data;
     }
 
