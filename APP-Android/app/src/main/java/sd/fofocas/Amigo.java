@@ -15,7 +15,7 @@ public class Amigo {
 
     public Amigo(String nome, int id){
         this.id=id;
-        this.nome=nome;
+        this.nome=nome.toUpperCase();
     }
 
     public String getNome(){

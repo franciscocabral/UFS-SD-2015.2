@@ -2,12 +2,15 @@ package sd.fofocas;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +18,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
+
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.AMQP.Queue.DeclareOk;
+
 
 /**
  * Created by Th on 03/05/2016.
@@ -64,12 +78,85 @@ public class AmigosActivity extends AppCompatActivity {
         adapter = new AmigoAdapter(this,amigos);
         lvAmigos.setAdapter(adapter);
 
+        final Handler incomingMessageHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String message = msg.getData().getString("msg");
+                Date now = new Date();
+                //amigo.addMensagem(message, now, false);
+                //descobrir amigo na mensagem pra mandar pro amigo correto
+            }
+        };
+        subscribe(incomingMessageHandler);
+
         lvAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Iniciar o Chat Activity
             }
         });
+    }
+
+    Thread subscribeThread;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        subscribeThread.interrupt();
+    }
+
+    ConnectionFactory factory = new ConnectionFactory();
+    private void setupConnectionFactory() {
+        String uri = "amqp://fthcmjci:TJWkglcMU8pbZjt89PYJRQV-Gi-SLD0g@black-boar.rmq.cloudamqp.com/fthcmjci";
+        try {
+            factory.setAutomaticRecoveryEnabled(false);
+            factory.setUri(uri);
+        } catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+    }
+    void subscribe(final Handler handler)
+    {
+        subscribeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    try {
+                        Connection connection = factory.newConnection();
+                        Channel channel = connection.createChannel();
+                        channel.basicQos(1);
+                        DeclareOk q = channel.queueDeclare();
+                        channel.queueBind(q.getQueue(), "amq.fanout", "chat");
+                        QueueingConsumer consumer = new QueueingConsumer(channel);
+                        channel.basicConsume(q.getQueue(), true, consumer);
+
+                        // Process deliveries
+                        while (true) {
+                            QueueingConsumer.Delivery delivery = consumer.nextDelivery();
+
+                            String message = new String(delivery.getBody());
+                            Log.d("","[r] " + message);
+
+                            Message msg = handler.obtainMessage();
+                            Bundle bundle = new Bundle();
+
+                            bundle.putString("msg", message);
+                            msg.setData(bundle);
+                            handler.sendMessage(msg);
+                        }
+                    } catch (InterruptedException e) {
+                        break;
+                    } catch (Exception e1) {
+                        Log.d("", "Connection broken: " + e1.getClass().getName());
+                        try {
+                            Thread.sleep(4000); //sleep and then try again
+                        } catch (InterruptedException e) {
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        subscribeThread.start();
     }
 
     public void novo_chat() {
