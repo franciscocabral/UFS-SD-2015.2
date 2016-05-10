@@ -28,6 +28,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ChatActivity extends Activity {
 
@@ -40,7 +41,14 @@ public class ChatActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         ListView lv = (ListView) findViewById(R.id.lvChat);
-        //recuperar amigo aqui
+        if (!getIntent().hasExtra("nome")){
+            Toast.makeText(ChatActivity.this, "Amigo Inválido", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        String nome_amigo = getIntent().getStringExtra("nome");
+
         mensagemAdapter = new MensagemAdapter(this, amigo.getMensagens());
         lv.setAdapter(mensagemAdapter);
 
@@ -95,7 +103,7 @@ public class ChatActivity extends Activity {
 
     ConnectionFactory factory = new ConnectionFactory();
     private void setupConnectionFactory() {
-        String uri = "amqp://fthcmjci:TJWkglcMU8pbZjt89PYJRQV-Gi-SLD0g@black-boar.rmq.cloudamqp.com/fthcmjci";
+        String uri = "franciscocabral.com";
         try {
             factory.setAutomaticRecoveryEnabled(false);
             factory.setUri(uri);
