@@ -14,16 +14,14 @@
 	$ch->exchange_declare($exchange, 'direct', TRUE, TRUE, FALSE);
 	$ch->queue_bind($queue, $exchange);
 
-	$msg_body = '';
+	$msg_body = ' ';
 	$msg = new AMQPMessage($msg_body, ['content_type' => 'text/plain', 'delivery_mode' => 2]);
 	$ch->basic_publish($msg, $exchange);
 
 	$retrived_msg = $ch->basic_get($queue);
 
 
-	$json = json_encode($retrived_msg->body);
-
-	echo $json;
+	echo ($retrived_msg->body);
 
 
 	$ch->basic_ack($retrived_msg->delivery_info['delivery_tag']);

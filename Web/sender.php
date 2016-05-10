@@ -15,6 +15,8 @@
 	$msg = new AMQPMessage($message);
   $ch->basic_publish($msg, '', $queue);
 
+	echo json_encode("sent to ".$queue);
+	
 	$ch->close();
 	$conn->close();
 	

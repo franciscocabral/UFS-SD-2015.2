@@ -89,3 +89,21 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+.recebi{
+  margin:5px;
+  padding: 5px;
+  display:block;
+  width:75%;
+  background-color: lightblue;
+  border-radius:10px;
+}
+.enviei{
+  text-align:right;
+  margin:5px;
+  padding: 5px;
+  display:block;
+  width:75%;
+  background-color: lightgreen;
+  border-radius:10px;
+}

@@ -3,7 +3,7 @@ var user = localStorage.getItem("user");
 $(document).ready(function() {
 	if (user != null) {
 		$("#username").text("Bem vindo: " + user);
-		carregar_do_banco();
+		carregar_mensagens();
 		listen_queue(user);
 	} else {
 		if (user = prompt("Quem é você?")) {
@@ -16,59 +16,85 @@ $(document).ready(function() {
 			window.location = "/";
 		}
 	}
+	
 });
 
 $(document).on("click", "#users a", function() {
 	var fila = $(this).attr("id");
 	$("#users a").removeClass("active");
 	$(this).addClass("active");
-	/////////////////////////////
-	// Troca de conversa atual //
-	/////////////////////////////
-	//media-body
-	//$("#users").append("<li class='list-group-item'>"+novoContato+"</li>");
+  $("#conversas>div").removeClass("hidden").addClass("hidden");
+  $("#conversas>#conversa-"+fila).removeClass("hidden");
 
-	console.log(fila);
 });
 
 $(document).on("click", "#addContato", function() {
 	var novoContato = $("#nomeNovoContato").val();
-	novoContato = novoContato.toUpperCase();
+	
+	if(novoContato !== ""){
+		novoContato = novoContato.toUpperCase();
 
-	var contatosNoBanco = localStorage.getItem("contatos");
-	var contatoCadastado = false;
-	$(contatosNoBanco).each(function(i, contatoAtual) {
-		if (contatoAtual == novoContato) {
-			contatoCadastado = true;
+		var contatosNoBanco = localStorage.getItem("contatos");
+		var contatoCadastado = false;
+
+		if(contatosNoBanco != null){
+			contatosNoBanco = $.parseJSON(contatosNoBanco);
+			$(contatosNoBanco).each(function(i, contatoAtual) {
+				if (contatoAtual == novoContato) {
+					contatoCadastado = true;
+				}
+			});
 		}
-	});
 
-	if (!contatoCadastado) {
-		$("#users").append("<li class='list-group-item'>" + novoContato + "</li>");
-		armazenar_contato(novoContato); //Nao esta cadastrando!!!!!!!!
+		if (!contatoCadastado) {
+			armazenar_contato(novoContato);
+			$("#users a").removeClass("active");
+			$("#users").append("<a href='#' class='list-group-item active' id='"+novoContato+"'>" + novoContato + "</a>");
+			$("#conversas>div").removeClass("hidden").addClass("hidden");
+			$("#conversas").append("<div id='conversa-"+novoContato+"' class='panel-body'></div>");
+			/////////////////////
+			//Trocar chat atual//
+			/////////////////////
+		}else{
+			alert("Amigo ja existe!");
+		}
+		
+			$("#nomeNovoContato").val("");
 	}
 });
 
 $(document).on("click", "#send", function() {
 	var htmlMsg = $("#mensagem").val();
-	var to = $("#users .active").attr("id");
+	if(htmlMsg !== ""){
+		var to = $("#users .active").attr("id");
 
-	var tupla = {
-		from: user,
-		data: new Date(),
-		msg: htmlMsg
-	};
+		var tupla = {
+			from: user,
+			data: new Date(),
+			msg: htmlMsg
+		};
 
-	send_message(JSON.stringify(tupla), to);
+		send_message(JSON.stringify(tupla), to);
+		armazenar_historico(to, tupla);
+		$("#mensagem").val("");
 
-	armazenar_historico(to, tupla);
-
-	//     var historico = localStorage.getItem("historico");
-	//     historico = $.parseJSON(historico);
-	//     historico[to].push(tupla);
-	//     localStorage.setItem("historico", JSON.stringify(tupla));
+		add_msg(to, tupla);
+	}
 });
 
+function criar_amigos(){
+		var contatosNoBanco = localStorage.getItem("contatos");
+	
+		if(contatosNoBanco != null){
+			contatosNoBanco = $.parseJSON(contatosNoBanco);
+			$(contatosNoBanco).each(function(i, amigo) {
+				$("#users a").removeClass("active");
+				$("#users").append("<a href='#' class='list-group-item active' id='"+amigo+"'>" + amigo + "</a>");
+				$("#conversas>div").removeClass("hidden").addClass("hidden");
+				$("#conversas").append("<div id='conversa-"+amigo+"' class='panel-body'></div>");
+			});
+		}
+}
 
 function listen_queue(queue) {
 	setInterval(function() {
@@ -79,18 +105,20 @@ function listen_queue(queue) {
 				'queue': queue
 			},
 		}).done(function(json) {
-			var response = $.parseJSON(json);
-			console.log(response);
-			var from = response['from'];
-			var data = response['data'];
-			var msg = response['msg'];
+			if(json != " "){
+				var response = $.parseJSON(json);
 
-			//////////////////////////////
-			//Modifica o HTML usando JS //
-			//////////////////////////////
-			if (response != "") {
-				console.info("response:" + response);
-				armazenar_historico(from, response);
+				var from = response['from'];
+				var data = response['data'];
+				var msg = response['msg'];
+
+				//////////////////////////////
+				//Modifica o HTML usando JS //
+				//////////////////////////////
+				if (response != "") {
+					console.info("response:" + response['from']);
+					armazenar_historico(from, response);
+				}
 			}
 		});
 	}, 1000);
@@ -110,20 +138,30 @@ function send_message(msg, queue) {
 	});
 }
 
-function carregar_do_banco() {
-	//////////////////////////////////
-	//Carrega histórico de mensagens//
-	//////////////////////////////////
+function add_msg(fila, tupla){
+		var msg = tupla["msg"];
+		var data = tupla["data"];
+		var pull = fila == tupla["from"] ? "recebi pull-left" : "enviei pull-right";
+		$("#conversas>#conversa-"+fila).append("<div class='"+pull+"'>"+msg+"<br>"+data+"</div>");
+}
+
+function carregar_mensagens() {
+	criar_amigos();
 	var historico = localStorage.getItem("historico");
 	historico = $.parseJSON(historico);
 	$(historico).each(function(i, filas) {
-		$(filas).each(function(filaAtual, tupla) {
-			var quemEnviou = tupla.from;
-			var data = tupla.data;
-			var msg = tupla.msg;
-			///////////////////
-			//Colocar na tela//
-			///////////////////
+		$.each(filas, function(filaAtual, tuplas) {
+			$.each(tuplas, function(i, tupla){
+				var quemEnviou = tupla['from'];
+				var data = tupla['data'];
+				var msg = tupla['msg'];
+				
+				add_msg(filaAtual, tupla);
+				///////////////////
+				//Colocar na tela//
+				///////////////////
+			
+			});
 		});
 	});
 }
@@ -138,10 +176,6 @@ function carregar_contatos_do_banco() {
 }
 
 function armazenar_historico(from, tupla) {
-	var historico = localStorage.getItem("historico");
-	historico = $.parseJSON(historico);
-	if (typeof(historico == "undefined"))
-		historico = {};
 	//historico = { 
 	//  "CHICO":[
 	//     {from:"CHICO", msg:"bla", time:"..."}, 
@@ -158,15 +192,27 @@ function armazenar_historico(from, tupla) {
 	//     {from:"RODRIGO", msg:"bla", time:"..."}, 
 	//  ] 
 	//};
-	if (typeof(historico[from]) == "undefined")
+	
+	var historico = localStorage.getItem("historico");
+	historico = $.parseJSON(historico);
+	if (historico == null){
+		historico = {};
 		historico[from] = [];
+	}
+	if (historico[from] == null){
+		historico[from] = [];
+	}
 	historico[from].push(tupla);
 	localStorage.setItem("historico", JSON.stringify(historico));
 }
 
 function armazenar_contato(novoContato) {
 	var contatos = localStorage.getItem("contatos");
-	contatos = $.parseJSON(contatos);
+	if (contatos == null){
+		contatos = [];
+	}else{
+		contatos = $.parseJSON(contatos);
+	}
 	contatos.push(novoContato);
 	localStorage.setItem("contatos", JSON.stringify(contatos));
 }
