@@ -16,20 +16,26 @@
 		<div class="col-md-4">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					Últimas conversas
+					Contatos
 				</div>
 				<div class="panel-body">
 					<div class="list-group" id="users">
 						<a href="#" class="list-group-item active" id="USER1">
-							USER1
+							Contato 1
 						</a>
 						<a href="#" class="list-group-item" id="USER2">
-							USER2
+							Contato 2
 						</a>
 						<a href="#" class="list-group-item" id="USER3">
-							USER3
+							Contato 3
 						</a>
 					</div>
+				</div>
+				<div class="input-group">
+						<input id="nomeNovoContato" type="text" class="form-control" placeholder="Digite novo contato" id="inContato"/>
+							<span class="input-group-btn">
+							<button id="addContato" class="btn btn-info" type="button">Adicionar</button>
+							</span>
 				</div>
 			</div>
 		</div>
