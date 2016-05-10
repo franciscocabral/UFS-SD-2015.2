@@ -1,10 +1,9 @@
 var user = localStorage.getItem("user");
-var minhasMensagens = $.parseJSON(localStorage.getItem("mensagens")); //Nao e usado, pode remover?
 
 $(document).ready(function () {
     if (user != null) {
         $("#username").text("Bem vindo: " + user);
-        carregar_contatos_do_banco(); //Nao esta funcionando!!!!
+        carregar_do_banco();
         listen_queue(user);
     } else {
         if (user = prompt("Quem é você?")) {
@@ -12,7 +11,6 @@ $(document).ready(function () {
             $("#username").text("Bem vindo: " + user);
             localStorage.setItem("user", user);
             listen_queue(user);
-            //carregar_do_banco(); //Se o usuario e novo, pq carrega do banco aqui?
         } else {
             alert("É necessário se identificar!");
             window.location = "/";
@@ -53,7 +51,7 @@ $(document).on("click", "#addContato", function () {
 
 $(document).on("click", "#send", function () {
     var htmlMsg = $("#mensagem").val();
-    var to = $("#users .active").attr("id"); // "#users .active" ou "#users.active"?
+    var to = $("#users .active").attr("id");
 
     var tupla = {
         from: user,
@@ -102,11 +100,11 @@ function send_message(msg, queue) {
     });
 }
 
-function carregar_do_banco(){ //Se carrega o historico, pq e chamada no inicio? Nao deveria ser chamada quando se clica em um contato?
+function carregar_do_banco(){ 
     //////////////////////////////////
     //Carrega histórico de mensagens//
     //////////////////////////////////
-    var historico = localStorage.getItem(from);
+    var historico = localStorage.getItem("historico");
     historico = $.parseJSON(historico);
     $(historico).each(function(i, filas){
         $(filas).each(function(filaAtual, tupla){
@@ -149,7 +147,7 @@ function armazenar_historico(response){
     //  ] 
     //};
     historico[from].push(response);
-    localStorage.setItem("historico", JSON.stringify(response)); //Nao seria JSON.stringify(historico)?
+    localStorage.setItem("historico", JSON.stringify(historico));
 }
 
 function armazenar_contato(novoContato){
