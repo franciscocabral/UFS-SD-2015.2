@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -38,8 +37,6 @@ public class ChatActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         ListView lv = (ListView) findViewById(R.id.lvChat);
         if (!getIntent().hasExtra("nome")){
@@ -167,7 +164,5 @@ public class ChatActivity extends AppCompatActivity {
             Gson g = new Gson();
             return g.toJson(this);
         }
-
-
     }
 }
