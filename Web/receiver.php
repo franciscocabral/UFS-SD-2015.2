@@ -16,7 +16,6 @@
 
 	$msg_body = ' ';
 	$msg = new AMQPMessage($msg_body, ['content_type' => 'text/plain', 'delivery_mode' => 2]);
-	$ch->basic_publish($msg, $exchange);
 
 	$retrived_msg = $ch->basic_get($queue);
 

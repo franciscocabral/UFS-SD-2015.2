@@ -52,9 +52,6 @@ $(document).on("click", "#addContato", function() {
 			$("#users").append("<a href='#' class='list-group-item active' id='"+novoContato+"'>" + novoContato + "</a>");
 			$("#conversas>div").removeClass("hidden").addClass("hidden");
 			$("#conversas").append("<div id='conversa-"+novoContato+"' class='panel-body'></div>");
-			/////////////////////
-			//Trocar chat atual//
-			/////////////////////
 		}else{
 			alert("Amigo ja existe!");
 		}
@@ -112,16 +109,14 @@ function listen_queue(queue) {
 				var data = response['data'];
 				var msg = response['msg'];
 
-				//////////////////////////////
-				//Modifica o HTML usando JS //
-				//////////////////////////////
 				if (response != "") {
+					add_msg(from, response);
 					console.info("response:" + response['from']);
 					armazenar_historico(from, response);
 				}
 			}
 		});
-	}, 1000);
+	}, 500);
 }
 
 function send_message(msg, queue) {
