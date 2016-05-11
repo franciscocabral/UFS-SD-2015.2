@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,27 +44,30 @@ public class BD {
         return amigos;
     }
 
-    public void buscarMensagem(Amigo amigo){
+    public ArrayList<Mensagem> buscarMensagem(Amigo amigo){
         ArrayList<Mensagem> mensagens = new ArrayList<>();
         String[] colunas = new String[]{"mensagem","data","enviada"};
 
         //Cursor cursor = bd.query("mensagens", colunas, null, null, null, null,"amigo ASC");
-        Cursor cursor = bd.query("mensagens",colunas,null,null,null,null,"data ASC",null);
+        Cursor cursor = bd.query("mensagens",colunas,"amigo = ?", new String[]{amigo.getNome()},null,null,"data ASC",null);
 
         if(cursor.getCount()>0){
             cursor.moveToFirst();
 
             do{
                try{
-                   mensagens.add(new Mensagem(cursor.getString(0),cursor.getString(0),cursor.getInt(3)==1?true:false));
+                   mensagens.add(new Mensagem(cursor.getString(0),cursor.getString(1),cursor.getInt(2)==1?true:false));
                } catch(Exception e){
                    System.out.println(e);
                }
+                Log.d("chat", ""+cursor.getCount());
 
             }while(cursor.moveToNext());
         }
         cursor.close();
-        amigo.setMensagens(mensagens);
+
+        return mensagens;
+
     }
 
     public void fechar(){

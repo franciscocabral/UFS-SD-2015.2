@@ -4,9 +4,6 @@ package sd.fofocas;
  * Created by Th on 28/04/2016.
  */
 
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.BlockingDeque;
@@ -16,14 +13,11 @@ import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.QueueingConsumer;
-import com.rabbitmq.client.AMQP.Queue.DeclareOk;
-
-import android.app.Activity;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,8 +25,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
-public class ChatActivity extends Activity {
+public class ChatActivity extends AppCompatActivity {
 
     private MensagemAdapter mensagemAdapter;
     private Amigo amigo;
@@ -43,6 +38,9 @@ public class ChatActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+
         ListView lv = (ListView) findViewById(R.id.lvChat);
         if (!getIntent().hasExtra("nome")){
             Toast.makeText(ChatActivity.this, "Amigo Inválido", Toast.LENGTH_SHORT).show();
@@ -51,8 +49,10 @@ public class ChatActivity extends Activity {
         }
         bd = new BD(this);
         String nome_amigo = getIntent().getStringExtra("nome");
+        setTitle(nome_amigo);
         amigo = AmigosActivity.getAmigoByName(nome_amigo);
-        bd.buscarMensagem(amigo);
+        amigo.setMensagens(bd.buscarMensagem(amigo));
+
         mensagemAdapter = new MensagemAdapter(this, amigo.getMensagens());
         lv.setAdapter(mensagemAdapter);
 

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Texto recebido!"
         android:id="@+id/tvTexto"
+        android:padding="12dp"
         android:layout_gravity="left"
         android:layout_marginRight="50dp"
         android:autoLink="all|web|map|email"

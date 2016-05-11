@@ -14,7 +14,7 @@ import java.util.Date;
 public class BDCore extends SQLiteOpenHelper {
 
     private static final String NOME_BD = "Fofocas";
-    private static final int VERSAO_BD = 3;
+    private static final int VERSAO_BD = 5;
 
 
     public BDCore(Context context){
@@ -27,7 +27,7 @@ public class BDCore extends SQLiteOpenHelper {
         inserir(new Mensagem("",(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true),new Amigo("Thales"),bd);
         inserir(new Mensagem("",(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true),new Amigo("Rodrigo"),bd);
         inserir(new Mensagem("",(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true),new Amigo("Icaro"),bd);
-        inserir(new Mensagem("",(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true),new Amigo("Francisco"),bd);
+        inserir(new Mensagem("",(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true),new Amigo("Chico"),bd);
 
     }
 

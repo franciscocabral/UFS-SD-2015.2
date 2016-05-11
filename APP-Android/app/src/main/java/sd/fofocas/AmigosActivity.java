@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -163,7 +164,7 @@ public class AmigosActivity extends AppCompatActivity {
                 String nome = edtNome.getText().toString().toUpperCase();
                 Amigo amigo_novo = new Amigo(nome);
                 amigos.add(amigo_novo);
-                bd.inserir(new Mensagem("",new Date(),true),amigo_novo);
+                bd.inserir(new Mensagem("",(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true),amigo_novo);
                 adapter.notifyDataSetChanged();
             }
         });
