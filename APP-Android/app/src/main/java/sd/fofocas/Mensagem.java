@@ -14,9 +14,9 @@ public class Mensagem {
     private String data;
     private boolean enviada;
 
-    public Mensagem(String texto, Date data, boolean enviada){
+    public Mensagem(String texto, String data, boolean enviada){
         this.texto = texto;
-        this.data = (new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")).format(data);
+        this.data = data;
         this.enviada = enviada;
     }
 

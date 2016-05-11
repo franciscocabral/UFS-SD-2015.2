@@ -5,23 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -31,6 +25,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.AMQP.Queue.DeclareOk;
 
+import com.google.gson.Gson;
 
 /**
  * Created by Th on 03/05/2016.
@@ -38,10 +33,11 @@ import com.rabbitmq.client.AMQP.Queue.DeclareOk;
 
 public class AmigosActivity extends AppCompatActivity {
 
-    ArrayList<Amigo> amigos = new ArrayList<>();
+    private static ArrayList<Amigo> amigos = new ArrayList<>();
     AmigoAdapter adapter;
     ListView lvAmigos;
     String usuario;
+    private BD bd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +52,7 @@ public class AmigosActivity extends AppCompatActivity {
             return;
         }
         usuario = getIntent().getStringExtra("nome");
-
+        bd = new BD(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,15 +62,7 @@ public class AmigosActivity extends AppCompatActivity {
         });
         lvAmigos = (ListView) findViewById(R.id.lvAmigos);
 
-        Amigo amigo1 = new Amigo("Thales",1);
-        Amigo amigo2 = new Amigo("Rodrigo",2);
-        Amigo amigo3 = new Amigo("Icaro",3);
-        Amigo amigo4 = new Amigo("Francisco",4);
-
-        amigos.add(amigo1);
-        amigos.add(amigo2);
-        amigos.add(amigo3);
-        amigos.add(amigo4);
+        amigos = bd.buscarAmigos();
 
         adapter = new AmigoAdapter(this,amigos);
         lvAmigos.setAdapter(adapter);
@@ -82,10 +70,10 @@ public class AmigosActivity extends AppCompatActivity {
         final Handler incomingMessageHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                String message = msg.getData().getString("msg");
-                Date now = new Date();
-                //amigo.addMensagem(message, now, false);
-                //descobrir amigo na mensagem pra mandar pro amigo correto
+                System.out.println(msg);
+                //String message = msg.getData().getString("msg");
+                //Date now = new Date();
+
             }
         };
         subscribe(incomingMessageHandler);
@@ -96,7 +84,6 @@ public class AmigosActivity extends AppCompatActivity {
                 Intent intent = new Intent(AmigosActivity.this, ChatActivity.class);
                 intent.putExtra("nome",amigos.get(position).getNome());
                 startActivity(intent);
-                finish();
             }
         });
     }
@@ -106,15 +93,16 @@ public class AmigosActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         subscribeThread.interrupt();
+        bd.fechar();
     }
 
     ConnectionFactory factory = new ConnectionFactory();
     private void setupConnectionFactory() {
-        String uri = "franciscocabral.com";
         try {
-            factory.setAutomaticRecoveryEnabled(false);
-            factory.setUri(uri);
-        } catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException e1) {
+            factory.setHost("franciscocabral.com");
+            factory.setUsername("guest");
+            factory.setPassword("guest");
+        } catch (Exception e1) {
             e1.printStackTrace();
         }
     }
@@ -173,11 +161,52 @@ public class AmigosActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String nome = edtNome.getText().toString().toUpperCase();
-                amigos.add(new Amigo(nome,amigos.size()+1));
+                Amigo amigo_novo = new Amigo(nome);
+                amigos.add(amigo_novo);
+                bd.inserir(new Mensagem("",new Date(),true),amigo_novo);
                 adapter.notifyDataSetChanged();
             }
         });
         alert.setNegativeButton("Cancelar",null);
         alert.show();
     }
+
+    public static Amigo getAmigoByName(String nome){
+        Amigo retorno=null;
+        for(Amigo amigo:amigos){
+            if(amigo.getNome().contentEquals(nome)){
+                retorno = amigo;
+                break;
+            }
+        }
+        if (retorno==null){
+            retorno = new Amigo(nome);
+        }
+        return retorno;
+    }
+
+    class Msg {
+
+        public String from;
+        public String msg;
+        public String data;
+
+        public Msg() {}
+
+        public Msg(String from, String msg, String data) {
+            this.from = from;
+            this.msg = msg;
+            this.data = data;
+        }
+
+        public String toJson(){
+            Gson g = new Gson();
+            return g.toJson(this);
+        }
+
+
+    }
+
+
+
 }

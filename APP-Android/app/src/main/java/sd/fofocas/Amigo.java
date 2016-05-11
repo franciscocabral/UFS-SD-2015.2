@@ -10,11 +10,9 @@ import java.util.Date;
  */
 public class Amigo {
     private String nome;
-    private int id;
     private ArrayList<Mensagem> mensagens = new ArrayList<>();
 
-    public Amigo(String nome, int id){
-        this.id=id;
+    public Amigo(String nome){
         this.nome=nome.toUpperCase();
     }
 
@@ -22,15 +20,16 @@ public class Amigo {
         return nome;
     }
 
-    public int getId(){
-        return id;
-    }
+    public void addMensagem(Mensagem mensagem){
+        mensagens.add(mensagem);
 
-    public void addMensagem(String msg, Date data, boolean enviada){
-        mensagens.add(new Mensagem(msg,data,enviada));
     }
 
     public ArrayList<Mensagem> getMensagens() {
         return mensagens;
+    }
+
+    public void setMensagens(ArrayList<Mensagem> mensagens) {
+        this.mensagens = mensagens;
     }
 }

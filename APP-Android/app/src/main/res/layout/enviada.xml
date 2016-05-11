@@ -16,7 +16,7 @@
         android:autoLink="all|web|map|email"
         android:background="#30f240"
         android:elegantTextHeight="false"
-        android:textColor="@color/abc_background_cache_hint_selector_material_dark"
+        android:textColor="#000000"
         android:textSize="15dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="10dp"

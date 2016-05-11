@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -12,47 +13,58 @@ import java.util.ArrayList;
  */
 public class BD {
     private SQLiteDatabase bd;
+    BDCore bdCore;
 
     public BD(Context contexto){
-        BDCore auxBd = new BDCore(contexto);
-        bd = auxBd.getWritableDatabase();
+        bdCore = new BDCore(contexto);
+        bd = bdCore.getWritableDatabase();
     }
 
-    public void inserir(Mensagem mensagem, String amigo){
-        ContentValues valores = new ContentValues();
-        valores.put("amigo", amigo);
-        valores.put("mensagem", mensagem.getTexto());
-        valores.put("data", mensagem.getData());
-        valores.put("enviada", mensagem.isEnviada());
-
-        bd.insert("mensagem",null,valores);
+    public void inserir(Mensagem mensagem, Amigo amigo){
+        bdCore.inserir(mensagem, amigo, bd);
     }
 
-    public ArrayList<String> buscar(){
-        ArrayList<String> amigos = new ArrayList<String>();
-        String[] colunas = new String[]{"_id","amigo","mensagem","data", "enviada"};
+    public ArrayList<Amigo> buscarAmigos(){
+        ArrayList<Amigo> amigos = new ArrayList<>();
+        String[] colunas = new String[]{"amigo"};
 
-        Cursor cursor = bd.query("mensagens", colunas, null, null, null, null,"categoria ASC");
-
+        //Cursor cursor = bd.query("mensagens", colunas, null, null, null, null,"amigo ASC");
+        Cursor cursor = bd.query(true,"mensagens",colunas,null,null,"amigo",null,"amigo ASC",null);
 
         if(cursor.getCount()>0){
             cursor.moveToFirst();
 
             do{
-                //Passar linha a linha e pegar os amigos
-                /*Item i = new Item();
-                i.setId(cursor.getInt(0));
-                i.setNome(cursor.getString(1));
-                i.setCategoria(cursor.getInt(2));
-                i.setComprar(cursor.getInt(3) == 1);
-                lista.add(i);*/
+                amigos.add(new Amigo(cursor.getString(0)));
 
             }while(cursor.moveToNext());
         }
-
+        cursor.close();
         return amigos;
     }
 
+    public void buscarMensagem(Amigo amigo){
+        ArrayList<Mensagem> mensagens = new ArrayList<>();
+        String[] colunas = new String[]{"mensagem","data","enviada"};
+
+        //Cursor cursor = bd.query("mensagens", colunas, null, null, null, null,"amigo ASC");
+        Cursor cursor = bd.query("mensagens",colunas,null,null,null,null,"data ASC",null);
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            do{
+               try{
+                   mensagens.add(new Mensagem(cursor.getString(0),cursor.getString(0),cursor.getInt(3)==1?true:false));
+               } catch(Exception e){
+                   System.out.println(e);
+               }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        amigo.setMensagens(mensagens);
+    }
 
     public void fechar(){
         bd.close();
