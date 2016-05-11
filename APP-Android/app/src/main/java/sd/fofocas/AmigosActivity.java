@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gson.JsonObject;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -71,25 +72,15 @@ public class AmigosActivity extends AppCompatActivity {
         final Handler incomingMessageHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                String message = msg.getData().getString("msg");
-                //TextView tv = (TextView) findViewById(R.id.textView);
-                Date now = new Date();
-                SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss");
-                String data = ft.format(now);
-                /*
-                *
-                * capturar a msg no formato {"from":"amigo","msg":"mensagem","data":"data"}
-                *
-                * atribuir nume_amigo e mensagem_do_amigo
-                *
-                 * */
-                String nome_amigo = "THALES";
-                String mensagem_do_amigo = "MENSAGEM";
+                String mensagem = msg.getData().getString("msg");
+                String data = msg.getData().getString("data");
+                String nome_amigo = msg.getData().getString("from");
                 Amigo amigo = AmigosActivity.getAmigoByName(nome_amigo);
                 if(amigo==null){
-                    amigo = new Amigo("amigo, o que vem do from ali da msg");
+                    amigo = new Amigo(nome_amigo);
+                    adapter.notifyDataSetChanged();
                 }
-                amigo.addMensagem(new Mensagem(mensagem_do_amigo,data,false));
+                amigo.addMensagem(new Mensagem(mensagem,data,false));
 
             }
         };
@@ -134,7 +125,7 @@ public class AmigosActivity extends AppCompatActivity {
                         Channel channel = connection.createChannel();
                         channel.basicQos(1);
                         DeclareOk q = channel.queueDeclare();
-                        channel.queueBind(q.getQueue(),"amq.fanout", "chat");
+                        channel.queueBind(q.getQueue(),usuario , usuario);
                         /*
 
                         Na linha de cima não sei qual dos dois substituo pela variavel usuario pra ler a fila
@@ -228,6 +219,10 @@ public class AmigosActivity extends AppCompatActivity {
         public String toJson(){
             Gson g = new Gson();
             return g.toJson(this);
+        }
+
+        public void fromGson(JsonObject jsonObject){
+            jsonObject.get("from");
         }
     }
 
