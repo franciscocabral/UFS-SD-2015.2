@@ -15,8 +15,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,10 +26,10 @@ import android.widget.Toast;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private MensagemAdapter mensagemAdapter;
+    private MensagemAdapter adapter;
     private Amigo amigo;
     private BD bd;
-
+    String usuario;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,11 +45,14 @@ public class ChatActivity extends AppCompatActivity {
         bd = new BD(this);
         String nome_amigo = getIntent().getStringExtra("nome");
         setTitle(nome_amigo);
+        usuario = getIntent().getStringExtra("usuario");
+
         amigo = AmigosActivity.getAmigoByName(nome_amigo);
+
         amigo.setMensagens(bd.buscarMensagem(amigo));
 
-        mensagemAdapter = new MensagemAdapter(this, amigo.getMensagens());
-        lv.setAdapter(mensagemAdapter);
+        adapter = new MensagemAdapter(this, amigo.getMensagens());
+        lv.setAdapter(adapter);
 
         setupConnectionFactory();
         publishToAMQP();
@@ -71,8 +72,9 @@ public class ChatActivity extends AppCompatActivity {
                     amigo.addMensagem(msg);
                     bd.inserir(msg,amigo);
                     Gson g = new Gson();
-                    Msg m = new Msg(amigo.getNome(),msg.getTexto(),msg.getData());
+                    Msg m = new Msg(usuario,msg.getTexto(),msg.getData());
                     publishMessage(m.toJson());
+                    adapter.notifyDataSetChanged();
                     et.setText("");
                 }
             }
