@@ -71,9 +71,25 @@ public class AmigosActivity extends AppCompatActivity {
         final Handler incomingMessageHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                System.out.println(msg);
-                //String message = msg.getData().getString("msg");
-                //Date now = new Date();
+                String message = msg.getData().getString("msg");
+                //TextView tv = (TextView) findViewById(R.id.textView);
+                Date now = new Date();
+                SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss");
+                String data = ft.format(now);
+                /*
+                *
+                * capturar a msg no formato {"from":"amigo","msg":"mensagem","data":"data"}
+                *
+                * atribuir nume_amigo e mensagem_do_amigo
+                *
+                 * */
+                String nome_amigo = "THALES";
+                String mensagem_do_amigo = "MENSAGEM";
+                Amigo amigo = AmigosActivity.getAmigoByName(nome_amigo);
+                if(amigo==null){
+                    amigo = new Amigo("amigo, o que vem do from ali da msg");
+                }
+                amigo.addMensagem(new Mensagem(mensagem_do_amigo,data,false));
 
             }
         };
@@ -118,9 +134,17 @@ public class AmigosActivity extends AppCompatActivity {
                         Channel channel = connection.createChannel();
                         channel.basicQos(1);
                         DeclareOk q = channel.queueDeclare();
-                        channel.queueBind(q.getQueue(), "", usuario);
+                        channel.queueBind(q.getQueue(),"amq.fanout", "chat");
+                        /*
+
+                        Na linha de cima não sei qual dos dois substituo pela variavel usuario pra ler a fila
+
+                         */
                         QueueingConsumer consumer = new QueueingConsumer(channel);
                         channel.basicConsume(q.getQueue(), true, consumer);
+                        channel.queueDeclare(usuario, false, false, false, null);
+                        channel.basicConsume(usuario, true, consumer);
+
 
                         // Process deliveries
                         while (true) {
@@ -130,6 +154,7 @@ public class AmigosActivity extends AppCompatActivity {
                             Log.d("","[r] " + message);
 
                             Message msg = handler.obtainMessage();
+
                             Bundle bundle = new Bundle();
 
                             bundle.putString("msg", message);
@@ -204,8 +229,6 @@ public class AmigosActivity extends AppCompatActivity {
             Gson g = new Gson();
             return g.toJson(this);
         }
-
-
     }
 
 

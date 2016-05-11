@@ -65,13 +65,16 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 EditText et = (EditText) findViewById(R.id.etText);
-                Mensagem msg = new Mensagem(et.getText().toString(),(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true);
-                amigo.addMensagem(msg);
-                bd.inserir(msg,amigo);
-                Gson g = new Gson();
-                Msg m = new Msg(amigo.getNome(),msg.getTexto(),msg.getData());
-                publishMessage(m.toJson());
-                et.setText("");
+                String texto = et.getText().toString().trim();
+                if(!texto.isEmpty()){
+                    Mensagem msg = new Mensagem(texto,(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true);
+                    amigo.addMensagem(msg);
+                    bd.inserir(msg,amigo);
+                    Gson g = new Gson();
+                    Msg m = new Msg(amigo.getNome(),msg.getTexto(),msg.getData());
+                    publishMessage(m.toJson());
+                    et.setText("");
+                }
             }
         });
     }
