@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.gson.JsonObject;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -45,7 +44,7 @@ public class AmigosActivity extends AppCompatActivity {
     ListView lvAmigos;
     String usuario;
     private BD bd;
-    private Connection connection;
+    public static Connection conexao;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class AmigosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_amigos);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        conexao = getConnection();
         if (!getIntent().hasExtra("nome")) {
             Toast.makeText(AmigosActivity.this, "Login invalido", Toast.LENGTH_SHORT).show();
             finish();
@@ -129,45 +128,21 @@ public class AmigosActivity extends AppCompatActivity {
         return retorno;
     }
 
-    class Msg {
-
-        public String from;
-        public String msg;
-        public String data;
-
-        public Msg() {
-        }
-
-        public Msg(String from, String msg, String data) {
-            this.from = from;
-            this.msg = msg;
-            this.data = data;
-        }
-
-        public String toJson() {
-            Gson g = new Gson();
-            return g.toJson(this);
-        }
-
-        public void fromGson(JsonObject jsonObject) {
-            jsonObject.get("from");
-        }
-    }
-
-    private Connection getConnection() {
+    public Connection getConnection() {
+        Connection connection = null;
         try {
-            if (connection == null) {
-                factory = new ConnectionFactory();
-                factory.setHost("franciscocabral.com");
-                factory.setUsername("guest");
-                factory.setPassword("guest");
-                connection = factory.newConnection();
-            }
+            factory = new ConnectionFactory();
+            factory.setHost("franciscocabral.com");
+            factory.setUsername("guest");
+            factory.setPassword("guest");
+            connection = factory.newConnection();
+
         } catch (Exception e) {
             Log.e("TAG", "Erro ao conectar: " + e.getMessage(), e);
         }
         return connection;
     }
+
 
     public void listen() {
         new AsyncTask<Void, String, Void>() {
@@ -176,7 +151,7 @@ public class AmigosActivity extends AppCompatActivity {
             protected Void doInBackground(Void... params) {
                 Channel channel = null;
                 try {
-                    channel = getConnection().createChannel();
+                    channel = conexao.createChannel();
                     channel.queueDeclare(usuario, false, false, false, null);
 
                     Consumer consumer = new DefaultConsumer(channel) {

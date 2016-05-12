@@ -54,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new MensagemAdapter(this, amigo.getMensagens());
         lv.setAdapter(adapter);
 
-        setupConnectionFactory();
+        //setupConnectionFactory();
         publishToAMQP();
         setupPubButton();
 
@@ -100,8 +100,9 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    ConnectionFactory factory = new ConnectionFactory();
-    private void setupConnectionFactory() {
+    //ConnectionFactory factory = new ConnectionFactory();
+
+    /*private void setupConnectionFactory() {
 
         try {
             factory.setHost("franciscocabral.com");
@@ -110,7 +111,7 @@ public class ChatActivity extends AppCompatActivity {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-    }
+    }*/
 
     public void publishToAMQP()
     {
@@ -119,7 +120,7 @@ public class ChatActivity extends AppCompatActivity {
             public void run() {
                 while(true) {
                     try {
-                        Connection connection = factory.newConnection();
+                        Connection connection = AmigosActivity.conexao;
                         Channel ch = connection.createChannel();
                         ch.confirmSelect();
 
