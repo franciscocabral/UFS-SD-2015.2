@@ -5,7 +5,9 @@
 	use PhpAmqpLib\Message\AMQPMessage;
 
 
-	$conn = new AMQPConnection("franciscocabral.com", 5672, "guest", "guest");
+	//$conn = new AMQPConnection("franciscocabral.com", 5672, "guest", "guest");
+	$url = parse_url('amqp://fthcmjci:TJWkglcMU8pbZjt89PYJRQV-Gi-SLD0g@black-boar.rmq.cloudamqp.com/fthcmjci');
+	$conn = new AMQPConnection($url['host'], 5672, $url['user'], $url['pass'], substr($url['path'], 1));	
 	$ch = $conn->channel();
 
 	$queue = $_GET['queue'];
