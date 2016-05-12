@@ -4,7 +4,8 @@
     tools:context=".Mensagem"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="right">
 
     <TextView
         android:layout_width="match_parent"
@@ -12,11 +13,13 @@
         android:text="Texto recebido!"
         android:id="@+id/tvTexto"
         android:layout_gravity="right"
+        android:padding="12dp"
+        android:gravity="right"
         android:layout_marginRight="10dp"
         android:autoLink="all|web|map|email"
         android:background="#30f240"
         android:elegantTextHeight="false"
-        android:textColor="@color/abc_background_cache_hint_selector_material_dark"
+        android:textColor="#000000"
         android:textSize="15dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="10dp"

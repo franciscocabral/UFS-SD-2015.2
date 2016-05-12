@@ -42,7 +42,6 @@ public class MensagemAdapter extends BaseAdapter {
         final Mensagem mensagem = lista.get(posicao);
         final View layout;
 
-
         if (convertView == null && mensagem.isEnviada()) {
             LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = inflater.inflate(R.layout.enviada, null);
@@ -55,7 +54,6 @@ public class MensagemAdapter extends BaseAdapter {
 
         TextView texto = (TextView) layout.findViewById(R.id.tvTexto);
         texto.setText(mensagem.getTexto());
-
 
         return layout;
     }

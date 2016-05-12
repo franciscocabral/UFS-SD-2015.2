@@ -4,24 +4,18 @@ package sd.fofocas;
  * Created by Th on 28/04/2016.
  */
 
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.QueueingConsumer;
-import com.rabbitmq.client.AMQP.Queue.DeclareOk;
-
-import android.app.Activity;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,42 +24,40 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ChatActivity extends Activity {
+public class ChatActivity extends AppCompatActivity {
 
-    MensagemAdapter mensagemAdapter;
-    Amigo amigo;
-
+    private MensagemAdapter adapter;
+    private Amigo amigo;
+    private BD bd;
+    String usuario;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
         ListView lv = (ListView) findViewById(R.id.lvChat);
         if (!getIntent().hasExtra("nome")){
             Toast.makeText(ChatActivity.this, "Amigo Inválido", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-
+        bd = new BD(this);
         String nome_amigo = getIntent().getStringExtra("nome");
+        setTitle(nome_amigo);
+        usuario = getIntent().getStringExtra("usuario");
 
-        mensagemAdapter = new MensagemAdapter(this, amigo.getMensagens());
-        lv.setAdapter(mensagemAdapter);
+        amigo = AmigosActivity.getAmigoByName(nome_amigo);
 
-        setupConnectionFactory();
+        amigo.setMensagens(bd.buscarMensagem(amigo));
+
+        adapter = new MensagemAdapter(this, amigo.getMensagens());
+        lv.setAdapter(adapter);
+
+        //setupConnectionFactory();
         publishToAMQP();
         setupPubButton();
 
-        final Handler incomingMessageHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                String message = msg.getData().getString("msg");
-                Date now = new Date();
-                amigo.addMensagem(message, now, false);
-                mensagemAdapter.notifyDataSetChanged();
-            }
-        };
-        subscribe(incomingMessageHandler);
     }
 
     void setupPubButton() {
@@ -74,23 +66,30 @@ public class ChatActivity extends Activity {
             @Override
             public void onClick(View arg0) {
                 EditText et = (EditText) findViewById(R.id.etText);
-                amigo.addMensagem(et.getText().toString(),new Date(),true);
-                publishMessage(et.getText().toString());
-                et.setText("");
+                String texto = et.getText().toString().trim();
+                if(!texto.isEmpty()){
+                    Mensagem msg = new Mensagem(texto,(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true);
+                    amigo.addMensagem(msg);
+                    bd.inserir(msg,amigo);
+                    Gson g = new Gson();
+                    Msg m = new Msg(usuario,msg.getTexto(),msg.getData());
+                    publishMessage(m.toJson());
+                    adapter.notifyDataSetChanged();
+                    et.setText("");
+                }
             }
         });
     }
 
-    Thread subscribeThread;
     Thread publishThread;
     @Override
     protected void onDestroy() {
         super.onDestroy();
         publishThread.interrupt();
-        subscribeThread.interrupt();
+        bd.fechar();
     }
 
-    private BlockingDeque<String> queue = new LinkedBlockingDeque<String>();
+    private BlockingDeque<String> queue = new LinkedBlockingDeque<>();
     void publishMessage(String message) {
         //Adds a message to internal blocking queue
         try {
@@ -101,61 +100,18 @@ public class ChatActivity extends Activity {
         }
     }
 
-    ConnectionFactory factory = new ConnectionFactory();
-    private void setupConnectionFactory() {
-        String uri = "franciscocabral.com";
+    //ConnectionFactory factory = new ConnectionFactory();
+
+    /*private void setupConnectionFactory() {
+
         try {
-            factory.setAutomaticRecoveryEnabled(false);
-            factory.setUri(uri);
-        } catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException e1) {
+            factory.setHost("franciscocabral.com");
+            factory.setUsername("guest");
+            factory.setPassword("guest");
+        } catch (Exception e1) {
             e1.printStackTrace();
         }
-    }
-
-    void subscribe(final Handler handler)
-    {
-        subscribeThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    try {
-                        Connection connection = factory.newConnection();
-                        Channel channel = connection.createChannel();
-                        channel.basicQos(1);
-                        DeclareOk q = channel.queueDeclare();
-                        channel.queueBind(q.getQueue(), "amq.fanout", "chat");
-                        QueueingConsumer consumer = new QueueingConsumer(channel);
-                        channel.basicConsume(q.getQueue(), true, consumer);
-
-                        // Process deliveries
-                        while (true) {
-                            QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-
-                            String message = new String(delivery.getBody());
-                            Log.d("","[r] " + message);
-
-                            Message msg = handler.obtainMessage();
-                            Bundle bundle = new Bundle();
-
-                            bundle.putString("msg", message);
-                            msg.setData(bundle);
-                            handler.sendMessage(msg);
-                        }
-                    } catch (InterruptedException e) {
-                        break;
-                    } catch (Exception e1) {
-                        Log.d("", "Connection broken: " + e1.getClass().getName());
-                        try {
-                            Thread.sleep(4000); //sleep and then try again
-                        } catch (InterruptedException e) {
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-        subscribeThread.start();
-    }
+    }*/
 
     public void publishToAMQP()
     {
@@ -164,7 +120,7 @@ public class ChatActivity extends Activity {
             public void run() {
                 while(true) {
                     try {
-                        Connection connection = factory.newConnection();
+                        Connection connection = AmigosActivity.conexao;
                         Channel ch = connection.createChannel();
                         ch.confirmSelect();
 
@@ -194,5 +150,25 @@ public class ChatActivity extends Activity {
             }
         });
         publishThread.start();
+    }
+
+    class Msg {
+
+        public String from;
+        public String msg;
+        public String data;
+
+        public Msg() {}
+
+        public Msg(String from, String msg, String data) {
+            this.from = from;
+            this.msg = msg;
+            this.data = data;
+        }
+
+        public String toJson(){
+            Gson g = new Gson();
+            return g.toJson(this);
+        }
     }
 }
