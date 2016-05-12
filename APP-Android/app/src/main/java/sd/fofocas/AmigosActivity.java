@@ -42,7 +42,7 @@ public class AmigosActivity extends AppCompatActivity {
     private static ArrayList<Amigo> amigos = new ArrayList<>();
     AmigoAdapter adapter;
     ListView lvAmigos;
-    String usuario;
+    public static String usuario;
     private BD bd;
     public static Connection conexao;
 
@@ -52,7 +52,7 @@ public class AmigosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_amigos);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        conexao = getConnection();
+        conexao=null;
         if (!getIntent().hasExtra("nome")) {
             Toast.makeText(AmigosActivity.this, "Login invalido", Toast.LENGTH_SHORT).show();
             finish();
@@ -135,8 +135,12 @@ public class AmigosActivity extends AppCompatActivity {
             factory.setHost("franciscocabral.com");
             factory.setUsername("guest");
             factory.setPassword("guest");
+            factory.setAutomaticRecoveryEnabled(true);
+            factory.setRequestedHeartbeat(5);
+            factory.setNetworkRecoveryInterval(5000);
+            factory.setConnectionTimeout(20_000);
+            /*factory.setUri("amqp://fthcmjci:TJWkglcMU8pbZjt89PYJRQV-Gi-SLD0g@black-boar.rmq.cloudamqp.com/fthcmjci");*/
             connection = factory.newConnection();
-
         } catch (Exception e) {
             Log.e("TAG", "Erro ao conectar: " + e.getMessage(), e);
         }
@@ -149,8 +153,13 @@ public class AmigosActivity extends AppCompatActivity {
 
             @Override
             protected Void doInBackground(Void... params) {
+                Log.e("EEEEEEEEEEEEE","ENTROUSAPORRAAAAAAAAAAAAAAAA");
+                while(conexao==null){
+                    conexao = getConnection();
+                }
                 Channel channel = null;
                 try {
+
                     channel = conexao.createChannel();
                     channel.queueDeclare(usuario, false, false, false, null);
 
@@ -160,7 +169,7 @@ public class AmigosActivity extends AppCompatActivity {
                                 throws IOException {
 
                             publishProgress(new String(body, "UTF-8"));
-                            Log.d("ERRO TH", new String(body, "UTF-8"));
+                            Log.d("RECEBEU", new String(body, "UTF-8"));
                         }
                     };
                     channel.basicConsume(usuario, true, consumer);
@@ -185,6 +194,7 @@ public class AmigosActivity extends AppCompatActivity {
                     amigo.addMensagem(msg);
                     bd.inserir(msg, amigo);
                     adapter.notifyDataSetChanged();
+                    Log.d("CHEGOU","CHEGOU MESMO?");
                 } catch (Exception e) {
                     Log.e("TAG", "Erro na conversão de json: ", e);
                 }
