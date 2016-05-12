@@ -45,7 +45,6 @@ public class AmigosActivity extends AppCompatActivity {
     ListView lvAmigos;
     String usuario;
     private BD bd;
-    private boolean alreadyListened = false;
     private Connection connection;
 
     @Override
@@ -171,58 +170,54 @@ public class AmigosActivity extends AppCompatActivity {
     }
 
     public void listen() {
-        if (!alreadyListened)
-            new AsyncTask<Void, String, Void>() {
-                @Override
-                protected void onPreExecute() {
-                    alreadyListened = true;
-                }
+        new AsyncTask<Void, String, Void>() {
 
-                @Override
-                protected void onProgressUpdate(String... values) {
-                    try {
-                        String json = values[0];
-                        JSONObject jsonObject = new JSONObject(json);
-                        String nome_amigo = jsonObject.getString("from");
-                        Amigo amigo = AmigosActivity.getAmigoByName(nome_amigo);
-                        if (amigo == null) {
-                            amigos.add(new Amigo(nome_amigo));
-                            adapter.notifyDataSetChanged();
+            @Override
+            protected Void doInBackground(Void... params) {
+                Channel channel = null;
+                try {
+                    channel = getConnection().createChannel();
+                    channel.queueDeclare(usuario, false, false, false, null);
+
+                    Consumer consumer = new DefaultConsumer(channel) {
+                        @Override
+                        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
+                                throws IOException {
+
+                            publishProgress(new String(body, "UTF-8"));
+                            Log.d("ERRO TH", new String(body, "UTF-8"));
                         }
-                        Mensagem msg = new Mensagem(jsonObject.getString("msg"),jsonObject.getString("data"), false);
-                        amigo.addMensagem(msg);
-                        bd.inserir(msg,amigo);
-                    } catch (Exception e) {
-                        Log.e("TAG", "Erro na conversão de json: ", e);
+                    };
+                    channel.basicConsume(usuario, true, consumer);
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    Log.e("TAG", "Erro ao receber: " + e.getMessage(), e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                try {
+                    String json = values[0];
+                    JSONObject jsonObject = new JSONObject(json);
+                    String nome_amigo = jsonObject.getString("from");
+                    Amigo amigo = AmigosActivity.getAmigoByName(nome_amigo);
+                    if (amigo == null) {
+                        amigos.add(new Amigo(nome_amigo));
                     }
-                    super.onProgressUpdate(values);
+                    Mensagem msg = new Mensagem(jsonObject.getString("msg"), jsonObject.getString("data"), false);
+                    amigo.addMensagem(msg);
+                    bd.inserir(msg, amigo);
+                    adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    Log.e("TAG", "Erro na conversão de json: ", e);
                 }
+                super.onProgressUpdate(values);
+            }
 
-                @Override
-                protected Void doInBackground(Void... params) {
-                    Channel channel = null;
-                    do {
-                        try {
-                            channel = getConnection().createChannel();
-                            channel.queueDeclare(usuario, false, false, false, null);
 
-                            Consumer consumer = new DefaultConsumer(channel) {
-                                @Override
-                                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
-                                        throws IOException {
-
-                                    publishProgress(new String(body, "UTF-8"));
-                                }
-                            };
-                            channel.basicConsume(usuario, true, consumer);
-                            Thread.sleep(1000);
-                        } catch (Exception e) {
-                            Log.e("TAG", "Erro ao receber: " + e.getMessage(), e);
-                        }
-                    } while (channel == null);
-                    return null;
-                }
-            }.execute();
+        }.execute();
     }
 
 
