@@ -71,6 +71,7 @@ public class AmigosActivity extends AppCompatActivity {
 
         amigos = bd.buscarAmigos();
 
+
         adapter = new AmigoAdapter(this, amigos);
         lvAmigos.setAdapter(adapter);
 
@@ -90,6 +91,7 @@ public class AmigosActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         bd.fechar();
+
     }
 
     ConnectionFactory factory = new ConnectionFactory();
@@ -108,6 +110,7 @@ public class AmigosActivity extends AppCompatActivity {
                 amigos.add(amigo_novo);
                 bd.inserir(new Mensagem("", (new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()), true), amigo_novo);
                 adapter.notifyDataSetChanged();
+
             }
         });
         alert.setNegativeButton("Cancelar", null);
@@ -132,14 +135,14 @@ public class AmigosActivity extends AppCompatActivity {
         Connection connection = null;
         try {
             factory = new ConnectionFactory();
-            factory.setHost("franciscocabral.com");
+            /*factory.setHost("franciscocabral.com");
             factory.setUsername("guest");
-            factory.setPassword("guest");
+            factory.setPassword("guest");*/
             factory.setAutomaticRecoveryEnabled(true);
             factory.setRequestedHeartbeat(5);
             factory.setNetworkRecoveryInterval(5000);
             factory.setConnectionTimeout(20_000);
-            /*factory.setUri("amqp://fthcmjci:TJWkglcMU8pbZjt89PYJRQV-Gi-SLD0g@black-boar.rmq.cloudamqp.com/fthcmjci");*/
+            factory.setUri("amqp://fthcmjci:TJWkglcMU8pbZjt89PYJRQV-Gi-SLD0g@black-boar.rmq.cloudamqp.com/fthcmjci");
             connection = factory.newConnection();
         } catch (Exception e) {
             Log.e("TAG", "Erro ao conectar: " + e.getMessage(), e);

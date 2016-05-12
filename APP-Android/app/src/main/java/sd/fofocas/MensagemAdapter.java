@@ -42,10 +42,10 @@ public class MensagemAdapter extends BaseAdapter {
         final Mensagem mensagem = lista.get(posicao);
         final View layout;
 
-        if (convertView == null && mensagem.isEnviada()) {
+        if (mensagem.isEnviada()) {
             LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = inflater.inflate(R.layout.enviada, null);
-        } else if (convertView == null && !mensagem.isEnviada()) {
+        } else if (!mensagem.isEnviada()) {
             LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = inflater.inflate(R.layout.recebida, null);
         } else {

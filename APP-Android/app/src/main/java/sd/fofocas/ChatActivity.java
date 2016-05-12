@@ -51,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
 
         amigo.setMensagens(bd.buscarMensagem(amigo));
 
+
         adapter = new MensagemAdapter(this, amigo.getMensagens());
         lv.setAdapter(adapter);
 
@@ -71,6 +72,7 @@ public class ChatActivity extends AppCompatActivity {
                     Mensagem msg = new Mensagem(texto,(new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")).format(new Date()),true);
                     amigo.addMensagem(msg);
                     bd.inserir(msg,amigo);
+
                     Gson g = new Gson();
                     Msg m = new Msg(usuario,msg.getTexto(),msg.getData());
                     publishMessage(m.toJson());
@@ -87,6 +89,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onDestroy();
         publishThread.interrupt();
         bd.fechar();
+
     }
 
     private BlockingDeque<String> queue = new LinkedBlockingDeque<>();

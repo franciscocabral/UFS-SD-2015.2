@@ -14,7 +14,7 @@ import java.util.Date;
 public class BDCore extends SQLiteOpenHelper {
 
     private static final String NOME_BD = "Fofocas";
-    private static final int VERSAO_BD = 6;
+    private static final int VERSAO_BD = 7;
 
 
     public BDCore(Context context){
